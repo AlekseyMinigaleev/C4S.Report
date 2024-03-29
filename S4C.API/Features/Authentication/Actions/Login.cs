@@ -30,6 +30,7 @@ namespace С4S.API.Features.Authentication.Actions
         {
             public string DeveloperName { get; set; }
             public string DeveloperPageUrl { get; set; }
+            public bool IsRsyaAuthorizationTokenSet { get; set; }
         }
 
         public class QueryValidator : AbstractValidator<Query>
@@ -123,6 +124,7 @@ namespace С4S.API.Features.Authentication.Actions
                 {
                     DeveloperPageUrl = user.DeveloperPageUrl,
                     DeveloperName = developerName,
+                    IsRsyaAuthorizationTokenSet = user.RsyaAuthorizationToken is not null,
                 };
 
                 return developerInfo;
