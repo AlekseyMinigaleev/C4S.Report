@@ -52,10 +52,6 @@ namespace С4S.API.Features.Game.Actions
             }
         }
 
-        public class PrepareGameViewModel
-        {
-        }
-
         public class GameViewModel
         {
             public Guid Id { get; set; }
@@ -120,11 +116,11 @@ namespace С4S.API.Features.Game.Actions
             {
                 var userId = _principal.GetUserId();
 
-                /*TODO: оптимизировать запрос*/
                 var allGames = await _dbContext.Games
                     .Where(x => x.UserId == userId)
                     .Include(x => x.User)
                     .ProjectTo<GameViewModel>(_mapper.ConfigurationProvider)
+                    .AsSplitQuery() /*TODO: не совсем понимаю как это работает, но это решает warning*/
                     .ToArrayAsync(cancellationToken);
 
                 var paginatedGames = allGames
