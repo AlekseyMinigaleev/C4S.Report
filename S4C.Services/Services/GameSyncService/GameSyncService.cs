@@ -86,11 +86,7 @@ namespace C4S.Services.Services.GameSyncService
                 var newGameStatistic = _mapper.Map<PublicGameData, GameStatisticModel>(publicGameData);
 
                 /*TODO: множественное обращение к бд*/
-                /*TODO: Refactoring*/
-                var existingGameModel = await _dbContext.Games
-                    .Where(x => x.UserId == _user.Id)
-                    .SingleOrDefaultAsync(x => x.AppId == newGameModel.AppId, cancellationToken);
-                newGameModel.SetPageId(existingGameModel?.PageId);
+                await EnrichByPageId(newGameModel, cancellationToken);
 
                 newGameModel.GameStatistics = new HashSet<GameStatisticModel>() { newGameStatistic };
                 newGameModel.SetUser(_user);
@@ -105,6 +101,16 @@ namespace C4S.Services.Services.GameSyncService
             _logger.LogSuccess("Данные успешно обработаны");
 
             return newGameModels;
+        }
+
+        private async Task<GameModel> EnrichByPageId(GameModel gameModelToEnrich, CancellationToken cancellationToken)
+        {
+            var existingGameModel = await _dbContext.Games
+                   .Where(x => x.UserId == _user.Id)
+                   .SingleOrDefaultAsync(x => x.AppId == gameModelToEnrich.AppId, cancellationToken);
+            gameModelToEnrich.SetPageId(existingGameModel?.PageId);
+
+            return gameModelToEnrich;
         }
 
         private async Task EnrichByHardCalculatedDataAsync(
