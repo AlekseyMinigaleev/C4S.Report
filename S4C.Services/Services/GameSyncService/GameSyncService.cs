@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using C4S.DB;
 using C4S.DB.Models;
+using C4S.DB.ValueObjects;
 using C4S.Services.Services.GameSyncService.Helpers;
 using C4S.Services.Services.GetGamesDataService;
 using C4S.Services.Services.GetGamesDataService.Models;
@@ -84,6 +85,13 @@ namespace C4S.Services.Services.GameSyncService
                 var newGameModel = _mapper.Map<PublicGameData, GameModel>(publicGameData);
                 var newGameStatistic = _mapper.Map<PublicGameData, GameStatisticModel>(publicGameData);
 
+                /*TODO: множественное обращение к бд*/
+                /*TODO: Refactoring*/
+                var existingGameModel = await _dbContext.Games
+                    .Where(x => x.UserId == _user.Id)
+                    .SingleOrDefaultAsync(x => x.AppId == newGameModel.AppId, cancellationToken);
+                newGameModel.SetPageId(existingGameModel?.PageId);
+
                 newGameModel.GameStatistics = new HashSet<GameStatisticModel>() { newGameStatistic };
                 newGameModel.SetUser(_user);
 
@@ -118,8 +126,12 @@ namespace C4S.Services.Services.GameSyncService
             var rating = _gameModelHardCalculatedDataMapper
                 .ConvertRating(existGameModel, publicGameData.Rating);
 
-            var cashIncome = _gameModelHardCalculatedDataMapper
-                    .ConvertCashIncome(privateGameData.CashIncome, existGameModel?.GameStatistics);
+            ValueWithProgress<double>? cashIncome;
+            if (gameModelToEnrich.PageId is null)
+                cashIncome = null;
+            else
+                cashIncome = _gameModelHardCalculatedDataMapper
+                         .ConvertCashIncome(privateGameData.CashIncome, existGameModel?.GameStatistics);
 
             gameModelToEnrich.AddCategories(categories);
             gameModelToEnrich.GameStatistics.First().Rating = rating;
