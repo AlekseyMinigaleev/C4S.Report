@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using C4S.DB;
-using C4S.DB.Expressions;
+using C4S.DB.Extensions;
 using C4S.DB.Models;
 using C4S.DB.ValueObjects;
 using C4S.Shared.Extensions;
@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Security.Principal;
+using System.Text.Json.Serialization;
 using С4S.API.Extensions;
 using С4S.API.Models;
 
@@ -51,6 +52,10 @@ namespace С4S.API.Features.Game.Actions
             }
         }
 
+        public class PrepareGameViewModel
+        {
+        }
+
         public class GameViewModel
         {
             public Guid Id { get; set; }
@@ -59,17 +64,23 @@ namespace С4S.API.Features.Game.Actions
 
             public DateTime? PublicationDate { get; set; }
 
-            public double Evaluation { get; set; }
-
             public string URL { get; set; }
 
             public string PreviewURL { get; set; }
 
             public string[] Categories { get; set; }
 
-            public ValueWithProgress<int>? Rating { get; set; }
+            public double Evaluation => LastSynchronizationStatistic.Evaluation;
 
-            public CashIncomeViewModel? CashIncome { get; set; }
+            public ValueWithProgress<int>? Rating => LastSynchronizationStatistic.Rating;
+
+            public CashIncomeViewModel? CashIncome =>
+                LastSynchronizationStatistic.CashIncome is not null
+                    ? new() { ValueWithProgress = LastSynchronizationStatistic.CashIncome }
+                    : null;
+
+            [JsonIgnore]
+            public GameStatisticModel LastSynchronizationStatistic { get; set; }
         }
 
         public class GameViewModelProfiler : Profile
@@ -77,15 +88,13 @@ namespace С4S.API.Features.Game.Actions
             public GameViewModelProfiler()
             {
                 CreateMap<GameModel, GameViewModel>()
-                    .ForMember(dest => dest.Evaluation, opt => opt.MapFrom(GameExpressions.ActualEvaluationExpression))
-                    .ForMember(dest => dest.CashIncome, opt => opt.MapFrom(src => src))
-                    .ForMember(dest => dest.Rating, opt => opt.MapFrom(GameExpressions.ActualRatingExpression))
                     .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.CategoryGameModels
-                        .Select(x => x.Category.Title)));
+                        .Select(x => x.Category.Title)))
+                    .ForMember(dest => dest.LastSynchronizationStatistic, opt => opt.MapFrom(src => src.GameStatistics.GetLastSynchronizationStatistic()))
 
-                CreateMap<GameModel, CashIncomeViewModel>()
-                    .ForMember(dest => dest.ValueWithProgress, opt => opt.MapFrom(GameExpressions.ActualCashIncomeExpression))
-                    .ForMember(dest => dest.Percentage, opt => opt.Ignore());
+                    .ForMember(dest => dest.CashIncome, opt => opt.Ignore())
+                    .ForMember(dest => dest.Evaluation, opt => opt.Ignore())
+                    .ForMember(dest => dest.Rating, opt => opt.Ignore());
             }
         }
 
@@ -113,8 +122,8 @@ namespace С4S.API.Features.Game.Actions
 
                 /*TODO: оптимизировать запрос*/
                 var allGames = await _dbContext.Games
-                    .Include(x => x.User) /*Почему то не подгружает автоматически для получения URL*/
                     .Where(x => x.UserId == userId)
+                    .Include(x => x.User)
                     .ProjectTo<GameViewModel>(_mapper.ConfigurationProvider)
                     .ToArrayAsync(cancellationToken);
 
@@ -148,8 +157,6 @@ namespace С4S.API.Features.Game.Actions
                         game.CashIncome.Percentage = CalculatePercentage(
                             game.CashIncome.ValueWithProgress.ActualValue,
                             response.Total.CashIncome!.Value);
-                    else
-                        game.CashIncome = null;
             }
 
             private static double CalculatePercentage<T>(T value, T total)
