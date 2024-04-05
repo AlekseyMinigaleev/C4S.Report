@@ -32,7 +32,7 @@ namespace С4S.API.Features.User
         /// https://yandex.ru/dev/partner-statistics/doc/ru/concepts/access
         /// </summary>
         [Authorize]
-        [HttpPut("setRsyaAuthorizationToken")]
+        [HttpPut("set-rsya-authorization-token")]
         public async Task<ActionResult> SetRsyaAuthorizationTokenAsync(
             [FromBody] SetRsyaAuthorizationToken.Command command,
             [FromServices] IValidator<SetRsyaAuthorizationToken.Command> validator,
@@ -41,7 +41,7 @@ namespace С4S.API.Features.User
             await ValidateAndChangeModelStateAsync(validator, command, cancellationToken);
 
             if (!ModelState.IsValid)
-                return BadRequest("Указан некорректный токен авторизации");
+                return BadRequest(ModelState);
 
             await Mediator.Send(command, cancellationToken);
 
@@ -63,7 +63,7 @@ namespace С4S.API.Features.User
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await Mediator.Send(query, cancellationToken);
+            await Mediator.Send(query, cancellationToken);  
 
             return Ok("Аккаунт успешно создан");
         }
