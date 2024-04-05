@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using C4S.Shared.Extensions;
 
-
 namespace С4S.API.Features.User.Actions
 {
     public class GetUser
@@ -21,6 +20,8 @@ namespace С4S.API.Features.User.Actions
             public string DeveloperPageUrl { get; set; }
 
             public string RsyaAuthorizationToken { get; set; }
+
+            public string Password { get; set; }
         }
 
         public class ViweModelProfiler : Profile

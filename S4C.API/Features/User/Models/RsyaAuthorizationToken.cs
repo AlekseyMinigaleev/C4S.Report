@@ -5,7 +5,7 @@ namespace С4S.API.Features.User.Requests
 {
     public class RsyaAuthorizationToken
     {
-        public RsyaAuthorizationToken(string token)
+        public RsyaAuthorizationToken(string? token)
         {
             Token = token;
         }
@@ -13,7 +13,7 @@ namespace С4S.API.Features.User.Requests
         /// <summary>
         /// Токен авторизации для апи /partner2.yandex.ru/api
         /// </summary>
-        public string Token { get; set; }
+        public string? Token { get; set; }
     }
 
     public class RsyaAuthorizationTokenValidator : AbstractValidator<RsyaAuthorizationToken>
@@ -23,6 +23,9 @@ namespace С4S.API.Features.User.Requests
             RuleFor(x => x.Token)
                 .MustAsync(async (authorizationToken, cancellationToken) =>
                     {
+                        if (authorizationToken is null)
+                            return true;
+
                         var validPattern = new Regex("^[a-zA-Z0-9_]+$");
                         if (!validPattern.IsMatch(authorizationToken))
                             return false;
@@ -37,8 +40,8 @@ namespace С4S.API.Features.User.Requests
 
                         return response.IsSuccessStatusCode;
                     })
-                .WithMessage("Указан неверный токен авторизации для апи /partner2.yandex.ru/api")
-                .WithErrorCode($"rsyaAuthorizationToken");
+                .WithErrorCode("ErrorMessages")
+                .WithMessage("Указан неверный токен авторизации РСЯ");
         }
     }   
 }
