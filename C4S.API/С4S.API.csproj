@@ -37,9 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\C4S.DB\C4S.DB.csproj" />
+    <ProjectReference Include="..\C4S.Services\C4S.Services.csproj" />
     <ProjectReference Include="..\C4S.Shared\C4S.Shared.csproj" />
-    <ProjectReference Include="..\S4C.DB\C4S.DB.csproj" />
-    <ProjectReference Include="..\S4C.Services\C4S.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

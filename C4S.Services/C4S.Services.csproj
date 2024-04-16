@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\C4S.DB\C4S.DB.csproj" />
     <ProjectReference Include="..\C4S.Shared\C4S.Shared.csproj" />
-    <ProjectReference Include="..\S4C.DB\C4S.DB.csproj" />
   </ItemGroup>
 
 </Project>
