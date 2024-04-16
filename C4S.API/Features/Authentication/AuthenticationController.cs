@@ -3,10 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using С4S.API.Features.Authentication.Actions;
-using С4S.API.Features.Authentication.Models;
+using C4S.API.Features.Authentication.Actions;
+using C4S.API.Features.Authentication.Models;
 
-namespace С4S.API.Features.Authentication
+namespace C4S.API.Features.Authentication
 {
     public class AuthenticationController : BaseApiController
     {

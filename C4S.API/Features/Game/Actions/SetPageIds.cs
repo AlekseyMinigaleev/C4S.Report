@@ -7,9 +7,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Principal;
-using С4S.API.Extensions;
+using C4S.API.Extensions;
 
-namespace С4S.API.Features.Game.Actions
+namespace C4S.API.Features.Game.Actions
 {
     public class SetPageIds
     {

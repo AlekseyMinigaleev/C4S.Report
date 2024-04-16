@@ -1,4 +1,4 @@
-﻿namespace С4S.API.Helpers
+﻿namespace C4S.API.Helpers
 {
     /*TODO: разобраться + рефакторинг*/
 

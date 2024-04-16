@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Security.Principal;
 using System.Text.Json.Serialization;
-using С4S.API.Extensions;
-using С4S.API.Models;
+using C4S.API.Extensions;
+using C4S.API.Models;
 
-namespace С4S.API.Features.Game.Actions
+namespace C4S.API.Features.Game.Actions
 {
     public class GetGames
     {

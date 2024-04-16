@@ -1,9 +1,9 @@
 ﻿using C4S.API.Features;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using С4S.API.Features.Category.Actions;
+using C4S.API.Features.Category.Actions;
 
-namespace С4S.API.Features.Category
+namespace C4S.API.Features.Category
 {
     public class CategoryController : BaseApiController
     {

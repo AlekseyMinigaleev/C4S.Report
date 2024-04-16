@@ -1,4 +1,4 @@
-﻿namespace С4S.API.Features.GameStatisticReport.ViewModels
+﻿namespace C4S.API.Features.GameStatisticReport.ViewModels
 {
     public class FileViewModel
     {

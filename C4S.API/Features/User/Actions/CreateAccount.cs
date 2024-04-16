@@ -8,10 +8,10 @@ using FluentValidation;
 using MediatR;
 using System.Net;
 using System.Text.Json.Serialization;
-using С4S.API.Features.Authentication.ViewModels;
-using С4S.API.Features.User.Requests;
+using C4S.API.Features.Authentication.ViewModels;
+using C4S.API.Features.User.Requests;
 
-namespace С4S.API.Features.User.Actions
+namespace C4S.API.Features.User.Actions
 {
     public class CreateAccount
     {

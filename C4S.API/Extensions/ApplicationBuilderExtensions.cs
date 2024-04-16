@@ -3,7 +3,7 @@ using C4S.Services.Services.CategoriesSyncService;
 using C4S.Shared.Logger;
 using Microsoft.EntityFrameworkCore;
 
-namespace С4S.API.Extensions
+namespace C4S.API.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

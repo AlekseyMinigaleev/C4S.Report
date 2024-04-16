@@ -3,10 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using С4S.API.Features.User.Action;
-using С4S.API.Features.User.Actions;
+using C4S.API.Features.User.Action;
+using C4S.API.Features.User.Actions;
 
-namespace С4S.API.Features.User
+namespace C4S.API.Features.User
 {
     public class UserController : BaseApiController
     {

@@ -4,7 +4,7 @@ using C4S.DB.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace С4S.API.Features.Game.Actions
+namespace C4S.API.Features.Game.Actions
 {
     public class GetGameById
     {

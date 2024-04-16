@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace С4S.API.Features.Authentication.Actions
+namespace C4S.API.Features.Authentication.Actions
 {
     public class RefreshAccessToken
     {

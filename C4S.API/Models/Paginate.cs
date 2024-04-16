@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace С4S.API.Models
+namespace C4S.API.Models
 {
     /// <summary>
     /// Параметры для пагинации

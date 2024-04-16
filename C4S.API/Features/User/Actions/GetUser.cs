@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using C4S.Shared.Extensions;
 
-namespace С4S.API.Features.User.Actions
+namespace C4S.API.Features.User.Actions
 {
     public class GetUser
     {

@@ -7,10 +7,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using С4S.API.Extensions;
-using С4S.API.Models;
+using C4S.API.Extensions;
+using C4S.API.Models;
 
-namespace С4S.API.Features.GameStatistic.Actions
+namespace C4S.API.Features.GameStatistic.Actions
 {
     public class GetGameStatistics
     {

@@ -6,10 +6,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using С4S.API.Features.Authentication.Models;
-using С4S.API.Features.Authentication.ViewModels;
+using C4S.API.Features.Authentication.Models;
+using C4S.API.Features.Authentication.ViewModels;
 
-namespace С4S.API.Features.Authentication.Actions
+namespace C4S.API.Features.Authentication.Actions
 {
     public class Login
     {

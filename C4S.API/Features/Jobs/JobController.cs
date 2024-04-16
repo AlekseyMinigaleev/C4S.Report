@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using С4S.API.Features.Jobs.Actions;
+using C4S.API.Features.Jobs.Actions;
 
 namespace C4S.API.Features.Jobs
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace С4S.API.Features.Authentication.Models
+namespace C4S.API.Features.Authentication.Models
 {
     /// <summary>
     /// бъект для хранения токенов авторизации.

@@ -3,9 +3,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using С4S.API.Features.Game.Actions;
+using C4S.API.Features.Game.Actions;
 
-namespace С4S.API.Features.Game
+namespace C4S.API.Features.Game
 {
     public class GameController : BaseApiController
     {

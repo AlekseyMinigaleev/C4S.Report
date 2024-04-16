@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace С4S.API.Extensions
+namespace C4S.API.Extensions
 {
     /// <summary>
     /// Статический класс с методами-расширениями для интерфейса IPrincipal.

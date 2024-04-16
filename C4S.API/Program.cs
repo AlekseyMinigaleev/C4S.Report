@@ -11,8 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Ñ4S.API.Extensions;
-using Ñ4S.API.Helpers;
+using C4S.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

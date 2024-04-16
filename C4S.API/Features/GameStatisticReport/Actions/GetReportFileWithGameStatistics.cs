@@ -5,9 +5,9 @@ using C4S.Shared.Models;
 using FluentValidation;
 using MediatR;
 using System.Security.Principal;
-using С4S.API.Features.GameStatisticReport.ViewModels;
+using C4S.API.Features.GameStatisticReport.ViewModels;
 
-namespace С4S.API.Features.GameStatisticReport.Actions
+namespace C4S.API.Features.GameStatisticReport.Actions
 {
     public class GetReportFileWithGameStatistics
     {

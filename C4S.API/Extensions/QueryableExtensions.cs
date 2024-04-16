@@ -1,6 +1,6 @@
-﻿using С4S.API.Models;
+﻿using C4S.API.Models;
 
-namespace С4S.API.Extensions
+namespace C4S.API.Extensions
 {
     public static class QueryableExtensions
     {

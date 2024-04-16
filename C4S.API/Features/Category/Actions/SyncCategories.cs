@@ -2,7 +2,7 @@
 using C4S.Shared.Logger;
 using MediatR;
 
-namespace С4S.API.Features.Category.Actions
+namespace C4S.API.Features.Category.Actions
 {
     public class SyncCategories
     {

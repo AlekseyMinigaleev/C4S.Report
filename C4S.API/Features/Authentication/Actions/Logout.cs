@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using C4S.Shared.Extensions;
 
-namespace С4S.API.Features.Authentication.Actions
+namespace C4S.API.Features.Authentication.Actions
 {
     public class Logout
     {

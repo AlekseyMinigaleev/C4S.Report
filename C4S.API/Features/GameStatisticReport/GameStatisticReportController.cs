@@ -5,9 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using С4S.API.Features.GameStatisticReport.Actions;
+using C4S.API.Features.GameStatisticReport.Actions;
 
-namespace С4S.API.Features.GameStatisticReport
+namespace C4S.API.Features.GameStatisticReport
 {
     public class GameStatisticReportController : BaseApiController
     {

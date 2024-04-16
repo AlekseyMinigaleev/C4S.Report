@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace С4S.API.Features.Authentication.ViewModels
+namespace C4S.API.Features.Authentication.ViewModels
 {
     /// <summary>
     /// Представляет учетные данные пользователя

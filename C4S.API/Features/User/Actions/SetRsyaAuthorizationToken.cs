@@ -3,10 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
-using С4S.API.Features.User.Requests;
+using C4S.API.Features.User.Requests;
 using C4S.Shared.Extensions;
 
-namespace С4S.API.Features.User.Action
+namespace C4S.API.Features.User.Action
 {
     public class SetRsyaAuthorizationToken
     {
