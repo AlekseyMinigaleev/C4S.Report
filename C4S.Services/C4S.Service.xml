@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>C4S.Services</name>
+    </assembly>
+    <members>
+        <member name="T:C4S.Services.Implements.BackgroundJobService">
+            <inheritdoc cref="T:C4S.Services.Interfaces.IHangfireBackgroundJobService"/>s
+        </member>
+        <member name="M:C4S.Services.Implements.BackgroundJobService.UpdateRecurringJobAsync(C4S.DB.Models.Hangfire.HangfireJobConfigurationModel,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <param name="updatedJobConfig" ><inheritdoc/></param>
+        </member>
+        <member name="M:C4S.Services.Implements.BackgroundJobService.AddMissingHangfirejobsAsync(C4S.Helpers.Logger.BaseLogger,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:C4S.Services.Implements.BackgroundJobService.OweriteJobsAsyncs(C4S.Helpers.Logger.BaseLogger,System.Threading.CancellationToken)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="T:C4S.Services.Implements.GameDataService">
+            <inheritdoc cref="T:C4S.Services.Interfaces.IGameDataService"/>
+        </member>
+        <member name="M:C4S.Services.Implements.GameDataService.UpdateGameAndCreateGameStatisticRecord(Hangfire.Server.PerformContext,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:C4S.Services.Implements.GameIdSyncService">
+            <inheritdoc cref="T:C4S.Services.Interfaces.IGameIdSyncService"/>
+        </member>
+        <member name="M:C4S.Services.Implements.GameIdSyncService.SyncAllGameIdAsync(Hangfire.Server.PerformContext,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:C4S.Services.Interfaces.IGameDataService">
+            <summary>
+            Джоба выполняющая обновление данных в таблице <see cref="T:C4S.DB.Models.GameModel"/> и создание записей в таблице <see cref="T:C4S.DB.Models.GameStatisticModel"/>
+            </summary>
+        </member>
+        <member name="M:C4S.Services.Interfaces.IGameDataService.UpdateGameAndCreateGameStatisticRecord(Hangfire.Server.PerformContext,System.Threading.CancellationToken)">
+            <summary>
+            Выполняет обновление данных в таблице <see cref="T:C4S.DB.Models.GameModel"/> и создает новые записи для таблицы <see cref="T:C4S.DB.Models.GameStatisticModel"/>
+            </summary>
+            <remarks>
+            Если у <see cref="T:C4S.DB.Models.GameModel"/> нет никаких изменений, то обновление данных пропускается.
+            При успешном завершении процесса, создается по 1 записи в таблице <see cref="T:C4S.DB.Models.GameStatisticModel"/> для каждой <see cref="T:C4S.DB.Models.GameModel"/>
+            </remarks>
+        </member>
+        <member name="T:C4S.Services.Interfaces.IGameIdSyncService">
+            <summary>
+            Джоба выполняющая синхронизацию id игр между базой данных и Яндексом.,
+            </summary>
+        </member>
+        <member name="M:C4S.Services.Interfaces.IGameIdSyncService.SyncAllGameIdAsync(Hangfire.Server.PerformContext,System.Threading.CancellationToken)">
+            <summary>
+             Выполняет процесс синхронизации id игр между базой данных и Яндексом.
+            </summary>
+        </member>
+        <member name="T:C4S.Services.Interfaces.IHangfireBackgroundJobService">
+            <summary>
+            Сервис для управления Hangfires job
+            </summary>
+        </member>
+        <member name="M:C4S.Services.Interfaces.IHangfireBackgroundJobService.AddMissingHangfirejobsAsync(C4S.Helpers.Logger.BaseLogger,System.Threading.CancellationToken)">
+            <summary>
+            Выполняет создание недостающих джоб.
+            </summary>
+            <remarks>
+            Работа метода включает в себя обновление таблицы <see cref="T:C4S.DB.Models.Hangfire.HangfireJobConfigurationModel"/>
+            </remarks>
+        </member>
+        <member name="M:C4S.Services.Interfaces.IHangfireBackgroundJobService.UpdateRecurringJobAsync(C4S.DB.Models.Hangfire.HangfireJobConfigurationModel,System.Threading.CancellationToken)">
+            <summary>
+            Выполняет обновление указанной джобы.
+            </summary>
+            <remarks>
+            Работа метода включает в себя обновление таблицы <see cref="T:C4S.DB.Models.Hangfire.HangfireJobConfigurationModel"/>
+            </remarks>
+            <param name="jobConfig">джоба которую нужно обновить</param>
+        </member>
+        <member name="M:C4S.Services.Interfaces.IHangfireBackgroundJobService.OweriteJobsAsyncs(C4S.Helpers.Logger.BaseLogger,System.Threading.CancellationToken)">
+            <summary>
+            выполнят перезапись всех джоб в hangfire базе данных
+            </summary>
+            <remarks>
+            Перезаписанные джобы будут с конфигурацией, сохраненной в Report базе данных
+            </remarks>
+            <param name="logger"></param>
+            <param name="cancellationToken"></param>
+        </member>
+    </members>
+</doc>

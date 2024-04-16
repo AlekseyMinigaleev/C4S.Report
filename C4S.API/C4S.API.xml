@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>С4S.API</name>
+    </assembly>
+    <members>
+        <member name="M:С4S.API.Extensions.ApplicationBuilderExtensions.InitApplicationAsync(Microsoft.AspNetCore.Builder.WebApplication,System.Threading.CancellationToken)">
+            <summary>
+            Выполняет все необходимые процессы, для корректной работы приложения
+            </summary>
+            <remarks>
+            Подразумевает в момент выполнения наличие базы данных для Hangfire
+            </remarks>
+        </member>
+        <member name="T:С4S.API.Extensions.PrincipalExtension">
+            <summary>
+            Статический класс с методами-расширениями для интерфейса IPrincipal.
+            </summary>
+        </member>
+        <member name="M:С4S.API.Extensions.PrincipalExtension.GetUserRsyaAuthorizationToken(System.Security.Principal.IPrincipal)">
+            <summary>
+            Получает токен авторизации для РСЯ пользователя из объекта IPrincipal.
+            </summary>
+            <param name="principal">Объект IPrincipal, представляющий текущего пользователя.</param>
+        </member>
+        <member name="M:С4S.API.Extensions.QueryableExtensions.Paginate``1(System.Linq.IQueryable{``0},С4S.API.Models.Paginate)">
+            <summary>
+            Выполняет пагинацию для <typeparamref name="IQueryable"/> коллекции.
+            </summary>
+            <param name="paginate">параметры пагинации</param>
+        </member>
+        <member name="M:С4S.API.Extensions.WebApplicationBuilderExtensions.BuildWithHangfireStorage(Microsoft.AspNetCore.Builder.WebApplicationBuilder,Microsoft.Extensions.Configuration.ConfigurationManager)">
+            <summary>
+            <inheritdoc cref="M:Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build"/>
+            </summary>
+            <remarks>
+            Перед созданием <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/> создает хранилище для Hangfire
+            </remarks>
+            <returns><inheritdoc cref="M:Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build"/></returns>
+        </member>
+        <member name="P:С4S.API.Features.Authentication.Actions.Login.Query.UserCreditionals">
+            <inheritdoc cref="T:С4S.API.Features.Authentication.ViewModels.UserCredentials"/>
+        </member>
+        <member name="M:С4S.API.Features.Authentication.AuthenticationController.Login(С4S.API.Features.Authentication.Actions.Login.Query,FluentValidation.IValidator{С4S.API.Features.Authentication.Actions.Login.Query},System.Threading.CancellationToken)">
+            <summary>
+            Осуществляет аутентификацию пользователя
+            </summary>
+            <returns>
+            Jwt-токен пользователя
+            </returns>
+        </member>
+        <member name="M:С4S.API.Features.Authentication.AuthenticationController.DeleteRefreshToken(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет удаление токена обновления.
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Authentication.AuthenticationController.RefreshAccessToken(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет обновление токена доступа
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Authentication.AuthenticationController.LogoutAsync(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет выход из аккаунта
+            </summary>
+        </member>
+        <member name="T:С4S.API.Features.Authentication.Models.AuthorizationTokens">
+            <summary>
+            бъект для хранения токенов авторизации.
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Authentication.Models.AuthorizationTokens.AccessToken">
+            <summary>
+            Токен доступа
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Authentication.Models.AuthorizationTokens.RefreshToken">
+            <summary>
+            Токен обновления
+            </summary>
+        </member>
+        <member name="T:С4S.API.Features.Authentication.ViewModels.UserCredentials">
+            <summary>
+            Представляет учетные данные пользователя
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Authentication.ViewModels.UserCredentials.Login">
+            <summary>
+            Логин пользователя
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Authentication.ViewModels.UserCredentials.Password">
+            <summary>
+            Пароль пользователя
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Category.CategoryController.SyncCategories(System.Threading.CancellationToken)">
+            <summary>
+            Запускает синхронизацию категорий игрк с Яндекса
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:С4S.API.Features.GameStatisticReport.GameStatisticReportController.GetGameStatisticReportAsync(System.String,System.String,FluentValidation.IValidator{С4S.API.Features.GameStatisticReport.Actions.GetReportFileWithGameStatistics.Query},System.Threading.CancellationToken)">
+            <summary>
+            Возвращает готовый к скачиванию файл отчета игровой статистики.
+            </summary>
+            <remarks>
+            dd.MM.yyyy
+            </remarks>
+        </member>
+        <member name="M:С4S.API.Features.GameStatistic.GameStatisticController.GetGameStatisticsAsync(С4S.API.Features.GameStatistic.Actions.GetGameStatistics.Query,FluentValidation.IValidator{С4S.API.Features.GameStatistic.Actions.GetGameStatistics.Query},System.Threading.CancellationToken)">
+            <summary>
+            Возвращает список записей статистики по игре
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Game.Actions.SetPageIds.Body.GameId">
+            <summary>
+            Id игры
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Game.Actions.SetPageIds.Body.PageId">
+            <summary>
+            Id страницы
+            </summary>
+            <remarks>
+            Поле для взаимодействия с РСЯ
+            </remarks>
+        </member>
+        <member name="P:С4S.API.Features.Game.Actions.SetPageIds.ViewModel.GameId">
+            <summary>
+            Id игры
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.Game.Actions.SetPageIds.ViewModel.PageId">
+            <summary>
+            Id страницы
+            </summary>
+            <remarks>
+            Поле для взаимодействия с РСЯ
+            </remarks>
+        </member>
+        <member name="P:С4S.API.Features.Game.Actions.SetPageIds.ViewModel.IsSuccessfullySet">
+            <summary>
+            Флаг показывающий было ли установлено значение
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Game.GameController.SetPageIdsAsync(С4S.API.Features.Game.Actions.SetPageIds.Command,FluentValidation.IValidator{С4S.API.Features.Game.Actions.SetPageIds.Command},System.Threading.CancellationToken)">
+            <summary>
+            Устанавливает PageId для игры. ОТСТУТСТВУЕТ ВАЛИДАЦИЯ НА УСТАНОВКУ PageId ИГРЕ, КОТОРОЙ ЭТОТ PageId НЕ ПРИНАДЛЕЖИТ.
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Game.GameController.GetGamesAsync(С4S.API.Features.Game.Actions.GetGames.Query,System.Threading.CancellationToken)">
+            <summary>
+            Возвращает список всех игр
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.Game.GameController.GetGameByIdAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Возвращает информацию о игре по указанному id
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.User.Actions.CreateAccount.Query.Credentionals">
+            <inheritdoc cref="T:С4S.API.Features.Authentication.ViewModels.UserCredentials"/>
+        </member>
+        <member name="P:С4S.API.Features.User.Actions.CreateAccount.Query.DeveloperPageUrl">
+            <summary>
+            ссылка на страницу разработчика
+            </summary>
+        </member>
+        <member name="P:С4S.API.Features.User.Actions.CreateAccount.Query.RsyaAuthorizationToken">
+            <inheritdoc cref="P:С4S.API.Features.User.Actions.CreateAccount.Query.RsyaAuthorizationToken"/>
+        </member>
+        <member name="P:С4S.API.Features.User.Action.SetRsyaAuthorizationToken.Command.RsyaAythorizationToken">
+            <inheritdoc cref="T:С4S.API.Features.User.Action.SetRsyaAuthorizationToken"/>
+        </member>
+        <member name="P:С4S.API.Features.User.Requests.RsyaAuthorizationToken.Token">
+            <summary>
+            Токен авторизации для апи /partner2.yandex.ru/api
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.User.UserController.GetUserAsync(System.Threading.CancellationToken)">
+            <summary>
+            Возвращает данные о пользователе, отображаемые в профиле.
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.User.UserController.SetRsyaAuthorizationTokenAsync(С4S.API.Features.User.Action.SetRsyaAuthorizationToken.Command,FluentValidation.IValidator{С4S.API.Features.User.Action.SetRsyaAuthorizationToken.Command},System.Threading.CancellationToken)">
+            <summary>
+            Устанавливает токен авторизации.
+            https://yandex.ru/dev/partner-statistics/doc/ru/concepts/access
+            </summary>
+        </member>
+        <member name="M:С4S.API.Features.User.UserController.CreateAccount(С4S.API.Features.User.Actions.CreateAccount.Query,FluentValidation.IValidator{С4S.API.Features.User.Actions.CreateAccount.Query},System.Threading.CancellationToken)">
+            <summary>
+            Создает новую учетную запись
+            </summary>
+        </member>
+        <member name="T:С4S.API.Helpers.ShemaClassesIdsRenamer">
+            <summary>
+            Переименовыватель id схемык класса
+            </summary>
+        </member>
+        <member name="M:С4S.API.Helpers.ShemaClassesIdsRenamer.Selector(System.Type)">
+            <summary>
+            хз че это
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="T:С4S.API.Models.Paginate">
+            <summary>
+            Параметры для пагинации
+            </summary>
+        </member>
+        <member name="P:С4S.API.Models.Paginate.ItemsPerPage">
+            <summary>
+            Количество элементов на странице
+            </summary>
+        </member>
+        <member name="P:С4S.API.Models.Paginate.PageNumber">
+            <summary>
+            номер страницы
+            </summary>
+        </member>
+        <member name="T:С4S.API.Models.Sort">
+            <summary>
+            Параметры для сортировки
+            </summary>
+        </member>
+        <member name="P:С4S.API.Models.Sort.FieldName">
+            <summary>
+            Имя поля по которому будет применять сортировка
+            </summary>
+        </member>
+        <member name="P:С4S.API.Models.Sort.SortType">
+            <summary>
+            тип сортировки
+            </summary>
+        </member>
+        <member name="M:С4S.API.Models.Sort.GetSortExpression">
+            <summary>
+            Возвращает строку для применения сортировки
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:С4S.API.Models.SortType">
+            <summary>
+            тип сортировки
+            </summary>
+        </member>
+        <member name="F:С4S.API.Models.SortType.Ascending">
+            <summary>
+            По возрастанию
+            </summary>
+        </member>
+        <member name="F:С4S.API.Models.SortType.Descending">
+            <summary>
+            По убыванию
+            </summary>
+        </member>
+        <member name="M:C4S.API.Extensions.ServiceCollectionExtensions.AddStorages(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.ConfigurationManager)">
+            <summary>
+            Добавляет все необходимые сервисы для хранилищ
+            </summary>
+        </member>
+        <member name="T:C4S.API.Features.BaseApiController">
+            <summary>
+            Базовый класс для всех контроллеров
+            </summary>
+        </member>
+        <member name="M:C4S.API.Features.BaseApiController.ValidateAndChangeModelStateAsync``1(FluentValidation.IValidator{``0},``0,System.Threading.CancellationToken)">
+            <summary>
+            Выполняет валидацию <paramref name="instance"/>
+            </summary>
+            <remarks>
+            Если объект <paramref name="instance"/> не валидным, метод изменяет состояние модели
+            </remarks>
+            <param name="instance">объект, над которым будет происходит валидация</param>
+            <returns></returns>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.Name">
+            <summary>
+            Название джобы
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.JobType">
+            <summary>
+            Тип джобы
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.CronExpression">
+            <summary>
+            cron выражение
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.IsEnable">
+            <summary>
+            статус джобы
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.Command.UpdatedJobs">
+            <summary>
+            <see cref="T:C4S.DB.Models.Hangfire.HangfireJobConfigurationModel"/>[] с обновленными полями
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.ResponseViewModel.JobType">
+            <summary>
+            тип джобы
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.ResponseViewModel.Error">
+            <summary>
+            Текст возможной ошибки при обновлении HangfireConfigurationModel
+            </summary>
+        </member>
+        <member name="M:C4S.API.Features.Jobs.JobController.GetJobsAsync(System.Threading.CancellationToken)">
+            <summary>
+             Выдает конфигурации всех запланированных джоб.
+            </summary>
+        </member>
+        <member name="M:C4S.API.Features.Jobs.JobController.UpdateJobsAsync(C4S.API.Features.Jobs.Actions.UpdateJobs.Command,FluentValidation.IValidator{C4S.API.Features.Jobs.Actions.UpdateJobs.Command},System.Threading.CancellationToken)">
+            <summary>
+            Выполняет обновление конфигураций всех запланированных джоб.
+            </summary>
+        </member>
+        <member name="M:C4S.API.Features.Jobs.JobController.OweriteJobsAsyc(System.Threading.CancellationToken)">
+            <summary>
+            Запускает процесс перезаписи всех джоб в hangfire базе данных
+            </summary>
+        </member>
+    </members>
+</doc>
