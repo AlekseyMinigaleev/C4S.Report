@@ -6,7 +6,7 @@ RUN apt-get update
 RUN apt-get install -y libcrypt1
 RUN apt-get install -y firefox
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 5041
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
