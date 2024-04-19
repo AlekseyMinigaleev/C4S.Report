@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4S.DB", "C4S.DB\C4S.DB.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4S.Services", "C4S.Services\C4S.Services.csproj", "{0BBB951F-4722-4B09-93A3-BDA0A730403B}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8AD88260-2800-48B8-80BB-7B03781B7569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0BBB951F-4722-4B09-93A3-BDA0A730403B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BBB951F-4722-4B09-93A3-BDA0A730403B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BBB951F-4722-4B09-93A3-BDA0A730403B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AD88260-2800-48B8-80BB-7B03781B7569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AD88260-2800-48B8-80BB-7B03781B7569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AD88260-2800-48B8-80BB-7B03781B7569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AD88260-2800-48B8-80BB-7B03781B7569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

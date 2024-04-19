@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  c4s.api:
+    image: ${DOCKER_REGISTRY-}c4sapi
+    build:
+      context: .
+      dockerfile: C4S.API/Dockerfile
