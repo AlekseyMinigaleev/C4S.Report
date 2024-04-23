@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: C4S.API/Dockerfile
     ports:
-        - 5041:5041
+        - 8080:8080
     depends_on: 
         - c4s.db
     networks:
