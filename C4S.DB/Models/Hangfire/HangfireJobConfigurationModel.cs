@@ -129,8 +129,7 @@ namespace C4S.DB.Models.Hangfire
     /// </summary>
     public static class HangfireJobConfigurationConstants
     {
-        public static readonly string DefaultCronExpression = Cron.Never().ToString(); /*TODO: уточнить*/
-
-        public const bool DefaultIsEnable = false; /*TODO: уточнить*/
+        public static readonly string DefaultCronExpression = "0 0 * * *";
+        public const bool DefaultIsEnable = true; 
     }
 }
