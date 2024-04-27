@@ -247,7 +247,7 @@ namespace C4S.Services.Services.BackgroundJobService
                 RecurringJob.AddOrUpdate(
                      $"{userLogin} {jobConfig.JobType.GetName()}",
                     methodCall,
-                    jobConfig.CronExpression ?? HangfireJobConfigurationConstants.DefaultCronExpression,
+                    HangfireJobConfigurationConstants.DefaultCronExpression,
                     new RecurringJobOptions
                     {
                         TimeZone = TimeZoneInfo.Local

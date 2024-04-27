@@ -11,11 +11,11 @@ using C4S.Services.Services.JWTService;
 using C4S.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
+using OpenQA.Selenium.Firefox;
 
 namespace C4S.Services.Extensions
 {
@@ -54,17 +54,12 @@ namespace C4S.Services.Extensions
 
             services.AddSingleton<IWebDriver>(provider =>
             {
-                new DriverManager().SetUpDriver(new ChromeConfig());
-                var chromeOptions = new ChromeOptions();
+                new DriverManager().SetUpDriver(new FirefoxConfig());
+                var firefoxOptions = new FirefoxOptions();
+                firefoxOptions.AddArgument("--headless");
+                firefoxOptions.AddArgument("--lang=ru");
 
-                chromeOptions.AddArgument("disable-infobars");
-                chromeOptions.AddArgument("disable-extensions");
-                chromeOptions.AddArgument("disable-notifications");
-                chromeOptions.AddArgument("headless");
-                chromeOptions.AddArgument("log-level=3");
-                chromeOptions.AddArgument("--lang=ru");
-
-                var driver = new ChromeDriver(chromeOptions);
+                var driver = new FirefoxDriver(firefoxOptions);
 
                 return driver;
             });

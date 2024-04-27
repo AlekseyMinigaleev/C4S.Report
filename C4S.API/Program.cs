@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using C4S.API.Helpers;
+using C4S.API;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -112,7 +113,11 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHangfireDashboard();
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangFireAuthorizationFilter() }
+});
+
 app.UseHttpsRedirection();
 app.MapControllers();
 

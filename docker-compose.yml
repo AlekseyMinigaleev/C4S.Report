@@ -1,0 +1,28 @@
+version: '3.4'
+
+networks:
+  c4s.report:
+
+services:
+  c4s.db: 
+    container_name: c4s.db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+        - 8001:1433
+    environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD=Wezed!ddwx1
+    networks:
+        - c4s.report
+  c4s.api:
+    container_name: c4s.api
+    image: ${DOCKER_REGISTRY-}c4sapi
+    build:
+      context: .
+      dockerfile: C4S.API/Dockerfile
+    ports:
+        - 8080:8080
+    depends_on: 
+        - c4s.db
+    networks:
+        - c4s.report
