@@ -28,7 +28,7 @@ namespace C4S.Services.Services.BackgroundJobService
         /// </remarks>
         /// <param name="jobConfig">джоба которую нужно обновить</param>
         public Task UpdateRecurringJobAsync(
-            HangfireJobConfigurationModel jobConfig,
+            UpdateHangfireJobConfigurationDTO jobConfig,
             CancellationToken cancellationToken = default);
 
         /// <summary>

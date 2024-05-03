@@ -38,7 +38,7 @@ namespace C4S.Shared.Extensions
 
             var userLoginClaim = claimsIdentity?.FindFirst(ClaimTypes.Name);
 
-            if (userLoginClaim != null && string.IsNullOrWhiteSpace(userLoginClaim.Value))
+            if (userLoginClaim != null && !string.IsNullOrWhiteSpace(userLoginClaim.Value))
                 return userLoginClaim.Value;
 
             throw new InvalidOperationException(

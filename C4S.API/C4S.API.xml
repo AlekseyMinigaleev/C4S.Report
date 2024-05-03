@@ -179,14 +179,14 @@
             Возвращает информацию о игре по указанному id
             </summary>
         </member>
+        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.Id">
+            <summary>
+            Id джобы
+            </summary>
+        </member>
         <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.Name">
             <summary>
             Название джобы
-            </summary>
-        </member>
-        <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.JobType">
-            <summary>
-            Тип джобы
             </summary>
         </member>
         <member name="P:C4S.API.Features.Jobs.Actions.GetJobs.ResponseViewModel.CronExpression">
@@ -204,9 +204,9 @@
             <see cref="T:C4S.DB.Models.Hangfire.HangfireJobConfigurationModel"/>[] с обновленными полями
             </summary>
         </member>
-        <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.ResponseViewModel.JobType">
+        <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.ResponseViewModel.Id">
             <summary>
-            тип джобы
+            Id джобы
             </summary>
         </member>
         <member name="P:C4S.API.Features.Jobs.Actions.UpdateJobs.ResponseViewModel.Error">

@@ -1,8 +1,12 @@
 ﻿using C4S.Db.Exceptions;
+using C4S.DB;
 using C4S.DB.Models.Hangfire;
 using C4S.Services.Services.BackgroundJobService;
+using C4S.Shared.Extensions;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace C4S.API.Features.Jobs.Actions
 {
@@ -13,15 +17,15 @@ namespace C4S.API.Features.Jobs.Actions
             /// <summary>
             /// <see cref="HangfireJobConfigurationModel"/>[] с обновленными полями
             /// </summary>
-            public HangfireJobConfigurationModel[] UpdatedJobs { get; set; }
+            public UpdateHangfireJobConfigurationDTO[] UpdatedJobs { get; set; }
         }
 
         public class ResponseViewModel
         {
             /// <summary>
-            /// тип джобы
+            /// Id джобы
             /// </summary>
-            public HangfireJobType JobType { get; set; }
+            public Guid Id { get; set; }
 
             /// <summary>
             /// Текст возможной ошибки при обновлении HangfireConfigurationModel
@@ -29,23 +33,41 @@ namespace C4S.API.Features.Jobs.Actions
             public string? Error { get; set; }
 
             public ResponseViewModel(
-                HangfireJobType jobType,
+                Guid id,
                 string? error = default)
             {
-                JobType = jobType;
+                Id = id;
                 Error = error;
             }
         }
 
         public class CommandValidator : AbstractValidator<Command>
         {
-            public CommandValidator()
+            public CommandValidator(
+                IPrincipal principal,
+                ReportDbContext dbContext)
             {
                 RuleFor(x => x)
-                    .Must(x => x.UpdatedJobs
-                        .GroupBy(x => x.JobType)
-                        .All(group => group.Count() == 1))
-                    .WithMessage("Duplicate JobType detected");
+                    .Must(x => x.UpdatedJobs.GroupBy(x => x.Id).All(group => group.Count() == 1))
+                    .WithErrorCode("Error")
+                    .WithMessage("Duplicate JobType detected")
+                    .Must((x) =>
+                    {
+                        var userJobs = dbContext.HangfireConfigurations
+                            .Where(x => x.UserId == principal.GetUserId())
+                            .Select(x => x.Id);
+
+                        if (!x.UpdatedJobs.GroupBy(x => x.Id).All(group => group.Count() == 1))
+                            return false;
+
+                        foreach (var job in x.UpdatedJobs)
+                            if (!userJobs.Contains(job.Id))
+                                return false;
+
+                        return true;
+                    })
+                    .WithErrorCode("Error")
+                    .WithMessage("Invalid jobs in the 'UpdatedJobs' list. Make sure that only the jobs belonging to the current user are listed.");
             }
         }
 
@@ -53,7 +75,8 @@ namespace C4S.API.Features.Jobs.Actions
         {
             private readonly IHangfireBackgroundJobService _backgroundJobService;
 
-            public Handler(IHangfireBackgroundJobService backGroundJobService)
+            public Handler(
+                IHangfireBackgroundJobService backGroundJobService)
             {
                 _backgroundJobService = backGroundJobService;
             }
@@ -71,8 +94,8 @@ namespace C4S.API.Features.Jobs.Actions
                             cancellationToken);
 
                     var responseViewModel = new ResponseViewModel(
-                        jobType: updatedJob.JobType,
-                        error: error);
+                        updatedJob.Id,
+                        error);
 
                     responseViewModelList.Add(responseViewModel);
                 }
@@ -81,7 +104,7 @@ namespace C4S.API.Features.Jobs.Actions
             }
 
             private async Task<string?> UpdateRecurringJobAndGetErrorsAsync(
-                HangfireJobConfigurationModel updatedJob,
+                UpdateHangfireJobConfigurationDTO updatedJob,
                 CancellationToken cancellationToken)
             {
                 string errors = null;
