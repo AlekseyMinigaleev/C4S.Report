@@ -28,19 +28,25 @@ namespace C4S.Services.Services.BackgroundJobService
         }
 
         /// <inheritdoc/>
-        /// <param name="updatedJobConfig" ><inheritdoc/></param>
+        /// <param name="updatedJobConfigDto" ><inheritdoc/></param>
         public async Task UpdateRecurringJobAsync(
-            HangfireJobConfigurationModel updatedJobConfig,
+            UpdateHangfireJobConfigurationDTO updatedJobConfigDto,
             CancellationToken cancellationToken = default)
         {
             var existenceJobConfig = await _dbContext.HangfireConfigurations
-                .SingleAsync(x => x.JobType == updatedJobConfig.JobType, cancellationToken);
+                .SingleAsync(x => x.Id == updatedJobConfigDto.Id, cancellationToken);
 
-            existenceJobConfig.Update(updatedJobConfig.CronExpression, updatedJobConfig.IsEnable);
+            existenceJobConfig.Update(
+                updatedJobConfigDto.CronExpression,
+                updatedJobConfigDto.IsEnable);
 
-            AddOrUpdateRecurringJob(existenceJobConfig, _principal.GetUserLogin(), _principal.GetUserId());
+            AddOrUpdateRecurringJob(
+                existenceJobConfig,
+                _principal.GetUserLogin(),
+                _principal.GetUserId());
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext
+                .SaveChangesAsync(cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -247,7 +253,11 @@ namespace C4S.Services.Services.BackgroundJobService
                 RecurringJob.AddOrUpdate(
                      $"{userLogin} {jobConfig.JobType.GetName()}",
                     methodCall,
-                    HangfireJobConfigurationConstants.DefaultCronExpression,
+                    jobConfig.IsEnable
+                        ? jobConfig.CronExpression is not null
+                            ? jobConfig.CronExpression
+                            : HangfireJobConfigurationConstants.DefaultCronExpression
+                        : Cron.Never(),
                     new RecurringJobOptions
                     {
                         TimeZone = TimeZoneInfo.Local

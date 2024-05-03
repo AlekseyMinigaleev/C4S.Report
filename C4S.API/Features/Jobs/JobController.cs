@@ -30,6 +30,7 @@ namespace C4S.API.Features.Jobs
         /// <summary>
         /// Выполняет обновление конфигураций всех запланированных джоб.
         /// </summary>
+        [Authorize]
         [HttpPost("UpdateAllJobs")]
         public async Task<ActionResult<UpdateJobs.ResponseViewModel>> UpdateJobsAsync(
             UpdateJobs.Command request,

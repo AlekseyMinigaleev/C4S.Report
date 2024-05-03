@@ -1,6 +1,5 @@
 ﻿using C4S.Db.Exceptions;
 using FluentValidation.Results;
-using Hangfire;
 using Microsoft.IdentityModel.Tokens;
 using NCrontab;
 using System.Linq.Expressions;
@@ -40,8 +39,8 @@ namespace C4S.DB.Models.Hangfire
 
         /// <summary>
         /// Пользователь, которому принадлежит конфигурация
-        /// </summary>
-        public UserModel User { get; private set; }
+            /// </summary>
+            public UserModel User { get; private set; }
 
         private HangfireJobConfigurationModel()
         { }
@@ -60,6 +59,7 @@ namespace C4S.DB.Models.Hangfire
 
             User = user;
             UserId = user.Id;
+        
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace C4S.DB.Models.Hangfire
 
             //потому что мы поддерживаем CronExpression = string.Empty, а hangfire нет
             if (string.IsNullOrWhiteSpace(CronExpression))
-                Update(null, IsEnable);
+                SetIsEnable(false);
 
             CronExpression = cronExpression;
             SetIsEnable(isEnable);
