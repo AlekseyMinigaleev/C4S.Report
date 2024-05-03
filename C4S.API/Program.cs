@@ -102,7 +102,7 @@ var app = builder.BuildWithHangfireStorage(configuration);
 
 #region middleware
 app.UseCors(options => options
-    .WithOrigins("http://localhost:3000", "http://localhost:5041/swagger")
+    .WithOrigins("http://158.160.98.39:3000", "http://localhost:3000")
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials());
