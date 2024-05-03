@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using C4S.API.Features.Jobs.Actions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace C4S.API.Features.Jobs
 {
@@ -16,6 +17,7 @@ namespace C4S.API.Features.Jobs
         /// <summary>
         ///  Выдает конфигурации всех запланированных джоб.
         /// </summary>
+        [Authorize]
         [HttpGet("GetAllJobs")]
         public async Task<ActionResult<GetJobs.ResponseViewModel[]>> GetJobsAsync(
             CancellationToken cancellationToken = default)
