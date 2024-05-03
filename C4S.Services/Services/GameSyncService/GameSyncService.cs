@@ -162,7 +162,7 @@ namespace C4S.Services.Services.GameSyncService
                     .ThenInclude(x => x.Category)
                 .ToList();
 
-            Archive(existingGameModels, newGameModels);
+            SetIsArchive(existingGameModels, newGameModels);
 
             Add(existingGameModels, newGameModels);
 
@@ -171,13 +171,20 @@ namespace C4S.Services.Services.GameSyncService
             _logger.LogInformation($"Начало обновление бд");
             await _dbContext.SaveChangesAsync(cancellationToken);
             _logger.LogSuccess($"Бд обновлена");
+        }
 
-            void Archive(
+        private void SetIsArchive(
                 IEnumerable<GameModel> existingGameModels,
                 IEnumerable<GameModel> newGameModels)
+        {
+            Archive();
+            UnArchie();
+
+            void Archive()
             {
                 var gameModelsToArchive = existingGameModels
                     .GetItemsNotInSecondCollection(newGameModels)
+                    .Where(x => x.IsArchived != true)
                     .ToList();
 
                 gameModelsToArchive
@@ -186,47 +193,63 @@ namespace C4S.Services.Services.GameSyncService
                 _logger.LogInformation($"Пометка 'архивные' установлена {gameModelsToArchive.Count} играм");
             }
 
-            void Add(
-                IEnumerable<GameModel> existingGameModels,
-                IEnumerable<GameModel> newGameModels)
+            void UnArchie()
             {
-                var gameModelsToAdd = newGameModels
-                   .GetItemsNotInSecondCollection(existingGameModels);
+                var gameModelsToUnArchive = existingGameModels
+                    .Where(
+                        x => newGameModels
+                            .Select(x => x.AppId)
+                            .Contains(x.AppId)
+                        && x.IsArchived == true)
+                    .ToList();
 
-                _dbContext.Games.AddRange(gameModelsToAdd);
-                _logger.LogInformation($"На добавление помечено {gameModelsToAdd.Count()} игр");
+                gameModelsToUnArchive
+                    .ForEach(x => x.SetIsArchived(false));
+
+                _logger.LogInformation($"Пометка 'архивные' снята {gameModelsToUnArchive.Count} играм");
             }
+        }
 
-            void Update(
+        private void Add(
                 IEnumerable<GameModel> existingGameModels,
                 IEnumerable<GameModel> newGameModels)
+        {
+            var gameModelsToAdd = newGameModels
+               .GetItemsNotInSecondCollection(existingGameModels);
+
+            _dbContext.Games.AddRange(gameModelsToAdd);
+            _logger.LogInformation($"На добавление помечено {gameModelsToAdd.Count()} игр");
+        }
+
+        private void Update(
+            IEnumerable<GameModel> existingGameModels,
+            IEnumerable<GameModel> newGameModels)
+        {
+            var count = 0;
+            foreach (var newGameModel in newGameModels)
             {
-                var count = 0;
-                foreach (var newGameModel in newGameModels)
+                var modelForUpdate = existingGameModels
+                    .SingleOrDefault(x => x.AppId == newGameModel.AppId);
+
+                if (modelForUpdate is not null)
                 {
-                    var modelForUpdate = existingGameModels
-                        .SingleOrDefault(x => x.AppId == newGameModel.AppId);
+                    modelForUpdate.Update(
+                        name: newGameModel.Name,
+                        publicationDate: newGameModel.PublicationDate,
+                        previewURL: newGameModel.PreviewURL,
+                        categories: newGameModel.Categories
+                        );
 
-                    if (modelForUpdate is not null)
-                    {
-                        modelForUpdate.Update(
-                            name: newGameModel.Name,
-                            publicationDate: newGameModel.PublicationDate,
-                            previewURL: newGameModel.PreviewURL,
-                            categories: newGameModel.Categories
-                            );
+                    var gameStatistic = newGameModel.GameStatistics.First();
+                    gameStatistic.GameId = modelForUpdate.Id;
 
-                        var gameStatistic = newGameModel.GameStatistics.First();
-                        gameStatistic.GameId = modelForUpdate.Id;
-
-                        _dbContext.GamesStatistics
-                            .Add(gameStatistic);
-                        count++;
-                    }
+                    _dbContext.GamesStatistics
+                        .Add(gameStatistic);
+                    count++;
                 }
-
-                _logger.LogInformation($"На обновление помечено {count} игр");
             }
+
+            _logger.LogInformation($"На обновление помечено {count} игр");
         }
     }
 }
