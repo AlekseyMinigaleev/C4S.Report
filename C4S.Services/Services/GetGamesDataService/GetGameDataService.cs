@@ -14,6 +14,8 @@ namespace C4S.Services.Services.GetGamesDataService
         private readonly GetPublicGameDataHelper _getPublicGameDataHelper;
         private readonly GetPrivateGameDataHelper _getPrivateGameDataHelper;
 
+        private const int MAX_CASH_INCOME_REPORT_DAYS = (2 * 365) + 1; // 2 года 1 день
+
         public GetGameDataService(
             GetAppIdHelper getAppIdHelper,
             GetPublicGameDataHelper getPublicGameDataHelper,
@@ -36,12 +38,43 @@ namespace C4S.Services.Services.GetGamesDataService
             var endDate = DateTime.Now;
             var period = new DateTimeRange(startDate, endDate);
 
-            var cashIncome = await _getPrivateGameDataHelper
-                .GetCashIncomeAsync(
-                    pageId: gameModel.PageId.Value,
-                    authorization: gameModel.User.RsyaAuthorizationToken,
-                    period: period,
-                    cancellationToken: cancellationToken);
+            double? cashIncome = default;
+
+            if (period.Difference.TotalDays > MAX_CASH_INCOME_REPORT_DAYS)
+            {
+                var numPeriods = (int)Math.Ceiling(period.Difference.TotalDays / MAX_CASH_INCOME_REPORT_DAYS);
+                var periodLength = (int)Math.Floor(period.Difference.TotalDays / numPeriods);
+
+                for (int i = 0; i < numPeriods; i++)
+                {
+                    var periodStartDate = startDate.AddDays(i * periodLength);
+                    var periodEndDate = (i == numPeriods - 1) ? endDate : periodStartDate.AddDays(periodLength - 1);
+
+                    var newPeriod = new DateTimeRange(periodStartDate, periodEndDate);
+
+                    var periodCashIncome = await _getPrivateGameDataHelper
+                        .GetCashIncomeAsync(
+                            pageId: gameModel.PageId.Value,
+                            authorization: gameModel.User.RsyaAuthorizationToken,
+                            period: newPeriod,
+                            cancellationToken: cancellationToken);
+                    
+                    if (i == 0)
+                        cashIncome = periodCashIncome;
+                    else
+                        cashIncome += periodCashIncome;
+
+                }
+            }
+            else
+            {
+                cashIncome = await _getPrivateGameDataHelper
+                    .GetCashIncomeAsync(
+                        pageId: gameModel.PageId.Value,
+                        authorization: gameModel.User.RsyaAuthorizationToken,
+                        period: period,
+                        cancellationToken: cancellationToken);
+            }   
 
             var privateGameData = new PrivateGameData { CashIncome = cashIncome };
 

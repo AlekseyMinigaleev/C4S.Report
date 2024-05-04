@@ -18,6 +18,8 @@ namespace C4S.Shared.Models
         /// </summary>
         public DateTime FinishDate { get; set; }
 
+        public TimeSpan Difference => FinishDate - StartDate;
+
         public DateTimeRange(
             DateTime startDate,
             DateTime finishDate)
