@@ -42,6 +42,12 @@ namespace C4S.DB.Models
         public string? RefreshToken { get; private set; }
 
         /// <summary>
+        /// Настройки пользователя
+        /// </summary>
+        public UserSettingModel Settings { get; set; }
+        public Guid SettingId => Settings.Id;
+
+        /// <summary>
         /// Список игр
         /// </summary>
         public ISet<GameModel> Games { get; set; }
