@@ -1,7 +1,7 @@
 ﻿
 namespace C4S.DB.Models
 {
-    public class UserSettingModel
+    public class UserSettingsModel
     {
         /// <summary>
         /// PK
@@ -21,6 +21,6 @@ namespace C4S.DB.Models
         /// <summary>
         /// FK
         /// </summary>
-        public Guid UserId => User.Id;
+        public Guid UserId { get; set; }
     }
 }

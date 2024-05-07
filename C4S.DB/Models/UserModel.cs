@@ -44,7 +44,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Настройки пользователя
         /// </summary>
-        public UserSettingModel Settings { get; set; }
+        public UserSettingsModel Settings { get; set; }
         public Guid SettingId => Settings.Id;
 
         /// <summary>
