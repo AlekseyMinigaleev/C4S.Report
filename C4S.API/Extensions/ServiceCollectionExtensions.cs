@@ -1,4 +1,5 @@
-﻿using C4S.DB;
+﻿using C4S.API.Attributes;
+using C4S.DB;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;
@@ -19,6 +20,8 @@ namespace C4S.API.Extensions
 
             services.AddDbContext<ReportDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<ConfidentialFilterAttribute>();
 
             services.AddHangfire(configuration => configuration
                 .UseFilter(new AutomaticRetryAttribute { Attempts = 0 })

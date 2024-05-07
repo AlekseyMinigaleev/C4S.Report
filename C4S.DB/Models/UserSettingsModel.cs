@@ -11,7 +11,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Конфиденциальный режим
         /// </summary>
-        public bool IsConfidentialMod { get; set; }
+        public bool IsConfidentialMode { get; set; }
 
         /// <summary>
         /// Пользователь настроек

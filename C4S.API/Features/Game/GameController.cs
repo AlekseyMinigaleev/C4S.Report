@@ -1,9 +1,9 @@
-﻿using C4S.API.Features;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using C4S.API.Features.Game.Actions;
+using C4S.API.Attributes;
 
 namespace C4S.API.Features.Game
 {
@@ -49,7 +49,8 @@ namespace C4S.API.Features.Game
         /// <summary>
         /// Возвращает информацию о игре по указанному id
         /// </summary>
-        [Authorize] 
+        [Authorize]
+        [ServiceFilter(typeof(ConfidentialFilterAttribute))]
         [HttpGet("get-game/{id}")]
         public async Task<ActionResult> GetGameByIdAsync(
             [FromRoute] Guid id,

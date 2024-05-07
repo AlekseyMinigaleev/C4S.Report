@@ -13,6 +13,11 @@ namespace C4S.DB
         /// Список C4S пользователей
         /// </summary>
         public DbSet<UserModel> Users { get; set; }
+        
+        /// <summary>
+        /// Список настроек пользователей
+        /// </summary>
+        public DbSet<UserSettingsModel> UserSettings { get; set; }
 
         /// <summary>
         /// Список игр

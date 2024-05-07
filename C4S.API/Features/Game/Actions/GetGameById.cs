@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using C4S.API.Attributes;
 using C4S.DB;
 using C4S.DB.Models;
 using MediatR;
@@ -21,6 +22,7 @@ namespace C4S.API.Features.Game.Actions
 
             public string PreviewURL { get; set; }
 
+            [Confidential]
             public int? PageId { get; set; }
 
             public string[] Categories { get; set; }
