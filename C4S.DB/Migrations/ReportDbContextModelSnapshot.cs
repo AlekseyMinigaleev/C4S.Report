@@ -169,26 +169,6 @@ namespace C4S.DB.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("C4S.DB.Models.UserSettingsModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsConfidentialMod")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserSettings", (string)null);
-                });
-
             modelBuilder.Entity("C4S.DB.Models.CategoryGameModel", b =>
                 {
                     b.HasOne("C4S.DB.Models.CategoryModel", "Category")
@@ -287,17 +267,6 @@ namespace C4S.DB.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("C4S.DB.Models.UserSettingsModel", b =>
-                {
-                    b.HasOne("C4S.DB.Models.UserModel", "User")
-                        .WithOne("Settings")
-                        .HasForeignKey("C4S.DB.Models.UserSettingsModel", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("C4S.DB.Models.GameModel", b =>
                 {
                     b.Navigation("CategoryGameModels");
@@ -310,9 +279,6 @@ namespace C4S.DB.Migrations
                     b.Navigation("Games");
 
                     b.Navigation("HangfireJobConfigurationModels");
-
-                    b.Navigation("Settings")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
