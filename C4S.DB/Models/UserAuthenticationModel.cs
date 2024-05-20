@@ -12,24 +12,24 @@ namespace C4S.DB.Models
         /// <summary>
         /// PK
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// FK
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid UserId { get; private set; }
 
-        public UserModel User { get; set; }
+        public UserModel User { get; private set; }
 
         /// <summary>
         /// Хэш пароля
         /// </summary>
-        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordHash { get; private set; }
 
         /// <summary>
         /// Соль пароля
         /// </summary>
-        public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordSalt { get; private set; }
 
         /// <summary>
         /// Токен обновления

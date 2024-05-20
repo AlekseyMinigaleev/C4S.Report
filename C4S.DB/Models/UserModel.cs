@@ -56,8 +56,9 @@ namespace C4S.DB.Models
         /// <summary>
         /// авторизационные данные пользователя
         /// </summary>
-        public UserAuthenticationModel AuthenticationModel { get; set; }
-        public Guid? AuthenticationId { get; set; }
+        public UserAuthenticationModel AuthenticationModel { get; private set; }
+
+        public Guid? AuthenticationId { get; private set; }
 
         public UserModel(
             string email,
