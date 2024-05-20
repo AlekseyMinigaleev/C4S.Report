@@ -5,6 +5,13 @@
     /// </summary>
     public abstract class BaseLogger
     {
+        public string? Prefix { get; set; }
+
+        public BaseLogger(string? prefix = default)
+        {
+            Prefix = prefix;
+        }
+
         /// <summary>
         /// Выполняет логирование на уровне <see cref="LogLevel.Information"/>
         /// </summary>
