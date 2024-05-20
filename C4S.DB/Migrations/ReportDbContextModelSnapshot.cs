@@ -140,52 +140,17 @@ namespace C4S.DB.Migrations
                     b.ToTable("HangfireJobConfiguration", (string)null);
                 });
 
-            modelBuilder.Entity("C4S.DB.Models.UserAuthenticationModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserAuthentication", (string)null);
-                });
-
             modelBuilder.Entity("C4S.DB.Models.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AuthenticationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("DeveloperPageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -302,17 +267,6 @@ namespace C4S.DB.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("C4S.DB.Models.UserAuthenticationModel", b =>
-                {
-                    b.HasOne("C4S.DB.Models.UserModel", "User")
-                        .WithOne("AuthenticationModel")
-                        .HasForeignKey("C4S.DB.Models.UserAuthenticationModel", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("C4S.DB.Models.GameModel", b =>
                 {
                     b.Navigation("CategoryGameModels");
@@ -322,9 +276,6 @@ namespace C4S.DB.Migrations
 
             modelBuilder.Entity("C4S.DB.Models.UserModel", b =>
                 {
-                    b.Navigation("AuthenticationModel")
-                        .IsRequired();
-
                     b.Navigation("Games");
 
                     b.Navigation("HangfireJobConfigurationModels");
