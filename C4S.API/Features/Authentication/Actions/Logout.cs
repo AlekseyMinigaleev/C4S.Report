@@ -29,10 +29,9 @@ namespace C4S.API.Features.Authentication.Actions
                 var userId = _principal.GetUserId();
 
                 var user = await _dbContext.Users
-                    .Include(x=>x.AuthenticationModel)
                     .SingleAsync(x => x.Id == userId, cancellationToken);
 
-                user.AuthenticationModel.SetRefreshToken(null);
+                user.SetRefreshToken(null);
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }

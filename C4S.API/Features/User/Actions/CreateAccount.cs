@@ -158,6 +158,7 @@ namespace C4S.API.Features.User.Actions
 
                 var user = new UserModel(
                     email: request.Credentionals.Login,
+                    password: request.Credentionals.Password,
                     developerPageUrl: request.DeveloperPageUrl,
                     rsyaAuthorizationToken: request.RsyaAuthorizationToken?.Token,
                     authenticationModel: userAuthenticationModel, 

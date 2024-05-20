@@ -19,6 +19,12 @@ namespace C4S.DB.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// Пароль пользователя
+        /// </summary>
+        [Obsolete]
+        public string Password { get; set; }
+
+        /// <summary>
         /// Ссылка на страницу разработчика
         /// </summary>
         public string DeveloperPageUrl { get; private set; }
@@ -30,6 +36,12 @@ namespace C4S.DB.Models
         /// РСЯ
         /// </remarks>
         public string? RsyaAuthorizationToken { get; private set; }
+
+        /// <summary>
+        /// Токен обновления
+        /// </summary>
+        [Obsolete]
+        public string? RefreshToken { get; private set; }
 
         /// <summary>
         /// Список игр
@@ -50,16 +62,20 @@ namespace C4S.DB.Models
 
         public UserModel(
             string email,
+            string password,
             string developerPageUrl,
             ISet<GameModel> games,
             UserAuthenticationModel authenticationModel,
-            string? rsyaAuthorizationToken = default)
+            string? rsyaAuthorizationToken = default,
+            string? refreshToken = null)
         {
             Id = Guid.NewGuid();
             DeveloperPageUrl = NormalizeDeveloperPageUrl(developerPageUrl);
             RsyaAuthorizationToken = rsyaAuthorizationToken;
             Games = games;
             Email = email;
+            Password = password;
+            RefreshToken = refreshToken;
             AuthenticationModel = authenticationModel;
         }
 
@@ -72,6 +88,24 @@ namespace C4S.DB.Models
         public void SetRsyaAuthorizationToken(string rsyaAuthorizationToken)
         {
             RsyaAuthorizationToken = rsyaAuthorizationToken;
+        }
+
+        /// <summary>
+        /// Устанавливает токен обновления
+        /// </summary>
+        [Obsolete]
+        public void SetRefreshToken(string? token)
+        {
+            RefreshToken = token;
+        }
+
+        /// <summary>
+        /// Удаляет токен обновления
+        /// </summary>
+        [Obsolete]
+        public void ClearRefreshToken()
+        {
+            RefreshToken = null;
         }
 
         /// <summary>
