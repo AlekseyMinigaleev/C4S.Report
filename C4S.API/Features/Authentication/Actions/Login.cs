@@ -43,8 +43,10 @@ namespace C4S.API.Features.Authentication.Actions
                 .MustAsync(async (query, cancellationToken) =>
                 {
                     var user = await dbContext.Users
+                        .Include(x=>x.AuthenticationModel)
                         .SingleOrDefaultAsync(
-                            x => x.Email.Equals(query.Login) && x.Password.Equals(query.Password),
+                            x => x.Email.Equals(query.Login)
+                                && x.AuthenticationModel.Password.Equals(query.Password),
                             cancellationToken);
 
                     return user is not null;
@@ -75,6 +77,7 @@ namespace C4S.API.Features.Authentication.Actions
                 CancellationToken cancellationToken)
             {
                 var user = await _dbContext.Users
+                    .Include(x=>x.AuthenticationModel)
                     .SingleAsync(
                         x => x.Email.Equals(query.UserCreditionals.Login),
                         cancellationToken);
@@ -103,7 +106,9 @@ namespace C4S.API.Features.Authentication.Actions
                     RefreshToken = _jwtService.CreateJwtToken(user, _jwtService.RefreshTokenExpiry),
                 };
 
-                user.SetRefreshToken(authorizationTokens.RefreshToken);
+                user.AuthenticationModel
+                    .SetRefreshToken(authorizationTokens.RefreshToken);
+
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return authorizationTokens;
