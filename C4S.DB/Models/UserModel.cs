@@ -57,13 +57,14 @@ namespace C4S.DB.Models
         /// авторизационные данные пользователя
         /// </summary>
         public UserAuthenticationModel AuthenticationModel { get; set; }
-        public Guid AuthenticationModelId { get; set; }
+        public Guid? AuthenticationId { get; set; }
 
         public UserModel(
             string email,
             string password,
             string developerPageUrl,
             ISet<GameModel> games,
+            UserAuthenticationModel authenticationModel,
             string? rsyaAuthorizationToken = default,
             string? refreshToken = null)
         {
@@ -74,6 +75,7 @@ namespace C4S.DB.Models
             Email = email;
             Password = password;
             RefreshToken = refreshToken;
+            AuthenticationModel = authenticationModel;
         }
 
         private UserModel()
