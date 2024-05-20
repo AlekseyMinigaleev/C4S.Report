@@ -16,7 +16,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Логин пользователя
         /// </summary>
-        public string Login { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Пароль пользователя
@@ -74,7 +74,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Устанавливает токен авторизации
         /// </summary>
-        public void SetAuthorizationToken(string rsyaAuthorizationToken)
+        public void SetRsyaAuthorizationToken(string rsyaAuthorizationToken)
         {
             RsyaAuthorizationToken = rsyaAuthorizationToken;
         }

@@ -125,7 +125,7 @@ namespace C4S.Services.Services.BackgroundJobService
                 {
                     var missingJobConfig = CreateMissingJobConfig(processingJobType, user);
                     missingJobConfigList.Add(missingJobConfig);
-                    AddOrUpdateRecurringJob(missingJobConfig, user.Login, user.Id);
+                    AddOrUpdateRecurringJob(missingJobConfig, user.Email, user.Id);
                 }
 
                 localLogger.Log(isMissingJobConfig, processingJobType.GetName());

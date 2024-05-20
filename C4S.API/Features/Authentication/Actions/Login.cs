@@ -44,7 +44,7 @@ namespace C4S.API.Features.Authentication.Actions
                 {
                     var user = await dbContext.Users
                         .SingleOrDefaultAsync(
-                            x => x.Login.Equals(query.Login) && x.Password.Equals(query.Password),
+                            x => x.Email.Equals(query.Login) && x.Password.Equals(query.Password),
                             cancellationToken);
 
                     return user is not null;
@@ -76,7 +76,7 @@ namespace C4S.API.Features.Authentication.Actions
             {
                 var user = await _dbContext.Users
                     .SingleAsync(
-                        x => x.Login.Equals(query.UserCreditionals.Login),
+                        x => x.Email.Equals(query.UserCreditionals.Login),
                         cancellationToken);
 
                 var authorizationTokens =

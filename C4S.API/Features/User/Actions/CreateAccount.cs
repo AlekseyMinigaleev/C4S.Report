@@ -60,7 +60,7 @@ namespace C4S.API.Features.User.Actions
                     .Must(userCredentials =>
                     {
                         var user = dbContext.Users
-                            .SingleOrDefault(x => x.Login.Equals(userCredentials.Login));
+                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login));
 
                         return user is null;
                     })
