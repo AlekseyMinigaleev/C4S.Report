@@ -42,7 +42,7 @@ namespace C4S.Services.Services.GetGamesDataService.RequestMethodDictionaries
             BaseLogger logger,
             CancellationToken cancellationToken = default)
         {
-            logger.LogInformation($"Начат процесс получения данных всем играм");
+            logger.LogInformation($"Получение всех данных по всем играм");
 
             var result = new List<PublicGameData>();
             foreach (var appId in appIds)

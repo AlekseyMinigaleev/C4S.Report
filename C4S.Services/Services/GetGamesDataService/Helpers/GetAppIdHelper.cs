@@ -43,22 +43,20 @@ namespace C4S.Services.Services.GetGamesDataService.Helpers
         {
             _developerPageUrl = developerPageUrl;
 
-            logger.LogInformation("Начат процесс получения AppId игр");
 
             logger.LogInformation("Получение url всех игр со страницы разработчика");
             var gameURLs = GetGamesURLs();
             logger.LogSuccess($"Успешно получено {gameURLs.Count()} url игр");
 
-            logger.LogInformation("Получения id из url ир");
+            logger.LogInformation("Получения AppID из url игр");
             var gameIds = new List<int>();
             foreach (var gameURL in gameURLs)
             {
                 var id = GetGameIdFromUrl(gameURL);
                 gameIds.Add(id);
             }
-            logger.LogSuccess($"Успешно получено {gameIds.Count} id");
+            logger.LogSuccess($"Успешно получено {gameIds.Count} AppID");
 
-            logger.LogSuccess("Процесс получения AppId игр успешно завершен");
 
             return gameIds.ToArray();
         }

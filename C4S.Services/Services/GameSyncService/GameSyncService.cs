@@ -61,54 +61,73 @@ namespace C4S.Services.Services.GameSyncService
             _existingGameModelsQuery = _dbContext.Games
                 .Where(x => x.UserId == _user.Id);
 
-            _logger.LogInformation("Начат процесс получения данных по всем играм");
+            _logger.LogInformation("Синхронизация всех данных, по всем играм запущена");
             var newGameModels = await GetGameModelToSynchroAsync(cancellationToken);
-            _logger.LogSuccess("процесс получения данных по всем играм завершен");
+            _logger.LogSuccess("Все данные, по всем играм получены");
 
-            _logger.LogInformation("Сохранение данных в бд");
+            _logger.LogInformation("Сохранение всех данных в бд");
             await UpdateDatabaseAsync(newGameModels, cancellationToken);
-            _logger.LogSuccess("Данные успешно сохранены");
+            _logger.LogSuccess("Все данные успешно сохранены");
+            _logger.LogSuccess("Синхронизация всех данных, по всем играм завершена");
         }
 
         private async Task<IEnumerable<GameModel>> GetGameModelToSynchroAsync(CancellationToken cancellationToken)
         {
             var publicGamesData = await _getGameDataService.GetPublicGameDataAsync(
-               _user.DeveloperPageUrl,
+                _user.DeveloperPageUrl,
                 _logger,
-               cancellationToken);
+                cancellationToken);
 
-            _logger.LogInformation("Обработка полученных данных");
+            _logger.LogInformation("Обработка всех полученных публичных данных, по всем играм");
 
             var newGameModels = new List<GameModel>();
             foreach (var publicGameData in publicGamesData)
             {
+                var loggerPrefix = $"[{publicGameData.AppId}]";
                 var newGameModel = _mapper.Map<PublicGameData, GameModel>(publicGameData);
                 var newGameStatistic = _mapper.Map<PublicGameData, GameStatisticModel>(publicGameData);
 
                 /*TODO: множественное обращение к бд*/
-                await EnrichByPageId(newGameModel, cancellationToken);
+                await EnrichByPageId(
+                    newGameModel,
+                    loggerPrefix,
+                    cancellationToken);
 
                 newGameModel.GameStatistics = new HashSet<GameStatisticModel>() { newGameStatistic };
                 newGameModel.SetUser(_user);
 
+                _logger.LogInformation($"{loggerPrefix} Получение сложно высчитываемых данных");
                 await EnrichByHardCalculatedDataAsync(
+                    loggerPrefix: loggerPrefix,
                     publicGameData: publicGameData,
                     gameModelToEnrich: newGameModel,
                     cancellationToken: cancellationToken);
+                _logger.LogInformation($"{loggerPrefix} Сложно высчитываемые данные получены");
 
                 newGameModels.Add(newGameModel);
             }
-            _logger.LogSuccess("Данные успешно обработаны");
+            _logger.LogSuccess("Все полученные публичные данные, по всем играм обработаны");
 
             return newGameModels;
         }
 
-        private async Task<GameModel> EnrichByPageId(GameModel gameModelToEnrich, CancellationToken cancellationToken)
+        private async Task<GameModel> EnrichByPageId(
+            GameModel gameModelToEnrich,
+            string loggerPrefix,
+            CancellationToken cancellationToken)
         {
             var existingGameModel = await _dbContext.Games
                    .Where(x => x.UserId == _user.Id)
                    .SingleOrDefaultAsync(x => x.AppId == gameModelToEnrich.AppId, cancellationToken);
+
+            _logger.LogInformation($"{loggerPrefix} привязка pageID, к новым полученных публичным данным.");
+
+            if (existingGameModel?.PageId is null)
+                _logger.LogWarning($"{loggerPrefix} не установлено pageID");
+
             gameModelToEnrich.SetPageId(existingGameModel?.PageId);
+
+            _logger.LogSuccess($"{loggerPrefix} pageID, к новым полученных публичным данным привзяна.");
 
             return gameModelToEnrich;
         }
@@ -116,6 +135,7 @@ namespace C4S.Services.Services.GameSyncService
         private async Task EnrichByHardCalculatedDataAsync(
             PublicGameData publicGameData,
             GameModel gameModelToEnrich,
+            string loggerPrefix,
             CancellationToken cancellationToken)
         {
             var existGameModel = _existingGameModelsQuery
@@ -123,21 +143,29 @@ namespace C4S.Services.Services.GameSyncService
                 .Include(x => x.User)
                 .SingleOrDefault(x => x.AppId == gameModelToEnrich.AppId);
 
+            _logger.LogInformation($"{loggerPrefix} Получение конфиденциальных данных");
             var privateGameData = await _getGameDataService
                 .GetPrivateGameDataAsync(existGameModel, cancellationToken);
+            _logger.LogSuccess($"{loggerPrefix} Конфиденциальные данные получены");
 
+            _logger.LogInformation($"{loggerPrefix} Получение категорий");
             var categories = await _gameModelHardCalculatedDataMapper
                 .ConvertCategories(publicGameData.CategoriesNames, cancellationToken);
+            _logger.LogSuccess($"{loggerPrefix} Категории получены");
 
+            _logger.LogInformation($"{loggerPrefix} Конвертирование рейтинга в valueWithProgress");
             var rating = _gameModelHardCalculatedDataMapper
                 .ConvertRating(existGameModel, publicGameData.Rating);
+            _logger.LogSuccess($"{loggerPrefix} Рейтинг в valueWithProgress конвертирован");
 
+            _logger.LogInformation($"{loggerPrefix} Конвертирование прибыли в valueWithProgress");
             ValueWithProgress<double>? cashIncome;
             if (gameModelToEnrich.PageId is null)
                 cashIncome = null;
             else
                 cashIncome = _gameModelHardCalculatedDataMapper
                          .ConvertCashIncome(privateGameData.CashIncome, existGameModel?.GameStatistics);
+            _logger.LogSuccess($"{loggerPrefix} Прибыль в valueWithProgress конвертирована");
 
             gameModelToEnrich.AddCategories(categories);
             gameModelToEnrich.GameStatistics.First().Rating = rating;

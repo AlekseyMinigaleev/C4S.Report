@@ -27,6 +27,26 @@ namespace C4S.Services.Services.GetGamesDataService
         }
 
         /// <inheritdoc/>
+        public async Task<PublicGameData[]> GetPublicGameDataAsync(
+            string developerPageUrl,
+            BaseLogger logger,
+            CancellationToken cancellationToken)
+        {
+            var appIds = _getAppIdHelper
+                .GetAppIdsAsync(
+                    developerPageUrl,
+                    logger);
+
+            var publicGameData = await _getPublicGameDataHelper
+                .GetGamesInfoAsync(
+                    appIds,
+                    logger,
+                    cancellationToken);
+
+            return publicGameData;
+        }
+
+        /// <inheritdoc/>
         public async Task<PrivateGameData> GetPrivateGameDataAsync(
              GameModel? gameModel,
              CancellationToken cancellationToken)
@@ -38,7 +58,7 @@ namespace C4S.Services.Services.GetGamesDataService
 
             if (period.Difference.TotalDays <= MAX_CASH_INCOME_REPORT_DAYS)
             {
-                var cashIncome = 
+                var cashIncome =
                     await GetCashIncomeAsync(
                         gameModel,
                         period,
@@ -109,26 +129,6 @@ namespace C4S.Services.Services.GetGamesDataService
             }
 
             return cashIncome;
-        }
-
-        /// <inheritdoc/>
-        public async Task<PublicGameData[]> GetPublicGameDataAsync(
-            string developerPageUrl,
-            BaseLogger logger,
-            CancellationToken cancellationToken)
-        {
-            var appIds = _getAppIdHelper
-                .GetAppIdsAsync(
-                    developerPageUrl,
-                    logger);
-
-            var publicGameData = await _getPublicGameDataHelper
-                .GetGamesInfoAsync(
-                    appIds,
-                    logger,
-                    cancellationToken);
-
-            return publicGameData;
         }
     }
 }
