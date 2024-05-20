@@ -36,6 +36,8 @@ namespace C4S.DB.Models
         /// </summary>
         public string? RefreshToken { get; private set; }
 
+        public string Password { get; private set; }
+
         public UserAuthenticationModel(
             UserModel user,
             string password,
