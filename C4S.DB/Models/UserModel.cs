@@ -21,6 +21,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Пароль пользователя
         /// </summary>
+        [Obsolete]
         public string Password { get; set; }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Токен обновления
         /// </summary>
+        [Obsolete]
         public string? RefreshToken { get; private set; }
 
         /// <summary>
@@ -51,8 +53,14 @@ namespace C4S.DB.Models
         /// </summary>
         public ISet<HangfireJobConfigurationModel> HangfireJobConfigurationModels { get; private set; }
 
+        /// <summary>
+        /// авторизационные данные пользователя
+        /// </summary>
+        public UserAuthenticationModel AuthenticationModel { get; set; }
+        public Guid AuthenticationModelId { get; set; }
+
         public UserModel(
-            string login,
+            string email,
             string password,
             string developerPageUrl,
             ISet<GameModel> games,
@@ -82,6 +90,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Устанавливает токен обновления
         /// </summary>
+        [Obsolete]
         public void SetRefreshToken(string? token)
         {
             RefreshToken = token;
@@ -90,6 +99,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Удаляет токен обновления
         /// </summary>
+        [Obsolete]
         public void ClearRefreshToken()
         {
             RefreshToken = null;
