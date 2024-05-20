@@ -63,7 +63,7 @@ namespace C4S.DB.Models
             DeveloperPageUrl = NormalizeDeveloperPageUrl(developerPageUrl);
             RsyaAuthorizationToken = rsyaAuthorizationToken;
             Games = games;
-            Login = login;
+            Email = email;
             Password = password;
             RefreshToken = refreshToken;
         }

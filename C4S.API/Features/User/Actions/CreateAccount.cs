@@ -153,7 +153,7 @@ namespace C4S.API.Features.User.Actions
             public async Task Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = new UserModel(
-                    login: request.Credentionals.Login,
+                    email: request.Credentionals.Login,
                     password: request.Credentionals.Password,
                     developerPageUrl: request.DeveloperPageUrl,
                     rsyaAuthorizationToken: request.RsyaAuthorizationToken?.Token,
