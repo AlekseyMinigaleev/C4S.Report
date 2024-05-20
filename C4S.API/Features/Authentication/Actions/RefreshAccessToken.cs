@@ -41,9 +41,11 @@ namespace C4S.API.Features.Authentication.Actions
                     return null;
 
                 var user = await _dbContext.Users
-                    .SingleOrDefaultAsync(x => x.Login.Equals(login), cancellationToken);
+                    .Include(x => x.AuthenticationModel)
+                    .SingleOrDefaultAsync(x => x.Email.Equals(login), cancellationToken);
+
                 if (user is null
-                    || user.RefreshToken != refreshToken)
+                    || user.AuthenticationModel.RefreshToken != refreshToken)
                     return null;
 
                 var accessToken = _jwtService

@@ -65,7 +65,7 @@ namespace C4S.Services.Services.JWTService
         {
             var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Login),
+                        new Claim(ClaimTypes.Name, user.Email),
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     };
 

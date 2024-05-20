@@ -16,12 +16,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Логин пользователя
         /// </summary>
-        public string Login { get; set; }
-
-        /// <summary>
-        /// Пароль пользователя
-        /// </summary>
-        public string Password { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Ссылка на страницу разработчика
@@ -37,11 +32,6 @@ namespace C4S.DB.Models
         public string? RsyaAuthorizationToken { get; private set; }
 
         /// <summary>
-        /// Токен обновления
-        /// </summary>
-        public string? RefreshToken { get; private set; }
-
-        /// <summary>
         /// Список игр
         /// </summary>
         public ISet<GameModel> Games { get; set; }
@@ -51,21 +41,26 @@ namespace C4S.DB.Models
         /// </summary>
         public ISet<HangfireJobConfigurationModel> HangfireJobConfigurationModels { get; private set; }
 
+        /// <summary>
+        /// авторизационные данные пользователя
+        /// </summary>
+        public UserAuthenticationModel AuthenticationModel { get; private set; }
+
+        public Guid? AuthenticationId { get; private set; }
+
         public UserModel(
-            string login,
-            string password,
+            string email,
             string developerPageUrl,
             ISet<GameModel> games,
-            string? rsyaAuthorizationToken = default,
-            string? refreshToken = null)
+            UserAuthenticationModel authenticationModel,
+            string? rsyaAuthorizationToken = default)
         {
             Id = Guid.NewGuid();
             DeveloperPageUrl = NormalizeDeveloperPageUrl(developerPageUrl);
             RsyaAuthorizationToken = rsyaAuthorizationToken;
             Games = games;
-            Login = login;
-            Password = password;
-            RefreshToken = refreshToken;
+            Email = email;
+            AuthenticationModel = authenticationModel;
         }
 
         private UserModel()
@@ -74,25 +69,9 @@ namespace C4S.DB.Models
         /// <summary>
         /// Устанавливает токен авторизации
         /// </summary>
-        public void SetAuthorizationToken(string rsyaAuthorizationToken)
+        public void SetRsyaAuthorizationToken(string rsyaAuthorizationToken)
         {
             RsyaAuthorizationToken = rsyaAuthorizationToken;
-        }
-
-        /// <summary>
-        /// Устанавливает токен обновления
-        /// </summary>
-        public void SetRefreshToken(string? token)
-        {
-            RefreshToken = token;
-        }
-
-        /// <summary>
-        /// Удаляет токен обновления
-        /// </summary>
-        public void ClearRefreshToken()
-        {
-            RefreshToken = null;
         }
 
         /// <summary>

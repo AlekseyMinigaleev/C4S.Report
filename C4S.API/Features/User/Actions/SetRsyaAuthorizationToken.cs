@@ -45,7 +45,7 @@ namespace C4S.API.Features.User.Action
                 var user = await _dbContext.Users
                     .SingleAsync(x => x.Id == userid, cancellationToken);
 
-                user.SetAuthorizationToken(request.RsyaAythorizationToken.Token);
+                user.SetRsyaAuthorizationToken(request.RsyaAythorizationToken.Token);
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }

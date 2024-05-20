@@ -29,7 +29,7 @@ namespace C4S.API.Features.User.Actions
             public ViweModelProfiler()
             {
                 CreateMap<UserModel, ViewModel>()
-                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Login));
+                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
             }
         }
 

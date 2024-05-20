@@ -60,7 +60,7 @@ namespace C4S.API.Features.User.Actions
                     .Must(userCredentials =>
                     {
                         var user = dbContext.Users
-                            .SingleOrDefault(x => x.Login.Equals(userCredentials.Login));
+                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login));
 
                         return user is null;
                     })
@@ -152,12 +152,17 @@ namespace C4S.API.Features.User.Actions
 
             public async Task Handle(Query request, CancellationToken cancellationToken)
             {
+                var userAuthenticationModel = new UserAuthenticationModel(
+                    user: null,
+                    request.Credentionals.Password);
+
                 var user = new UserModel(
-                    login: request.Credentionals.Login,
-                    password: request.Credentionals.Password,
+                    email: request.Credentionals.Login,
                     developerPageUrl: request.DeveloperPageUrl,
                     rsyaAuthorizationToken: request.RsyaAuthorizationToken?.Token,
+                    authenticationModel: userAuthenticationModel, 
                     games: new HashSet<GameModel>());
+       
 
                 await _dbContext.Users.AddAsync(user, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);

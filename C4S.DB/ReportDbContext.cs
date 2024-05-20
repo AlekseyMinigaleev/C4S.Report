@@ -15,6 +15,11 @@ namespace C4S.DB
         public DbSet<UserModel> Users { get; set; }
 
         /// <summary>
+        /// Список авторизационных данных пользователя
+        /// </summary>
+        public DbSet<UserAuthenticationModel> UserAuthenticationModels { get; set; }
+
+        /// <summary>
         /// Список игр
         /// </summary>
         public DbSet<GameModel> Games { get; set; }
