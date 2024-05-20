@@ -46,7 +46,7 @@ namespace C4S.API.Features.Authentication.Actions
                         .Include(x=>x.AuthenticationModel)
                         .SingleOrDefaultAsync(
                             x => x.Email.Equals(query.Login)
-                                && x.AuthenticationModel.Password.Equals(query.Password),
+                                && x.AuthenticationModel.ValidatePassword(query.Password),
                             cancellationToken);
 
                     return user is not null;
