@@ -8,6 +8,9 @@ namespace C4S.Shared.Logger
     /// </summary>
     public class HangfireLogger : BaseLogger
     {
+        public HangfireLogger(string? prefix = default)
+            : base(prefix) { }
+
         private readonly PerformContext _hangfireContext;
 
         public HangfireLogger(PerformContext hangfireContext)
@@ -26,6 +29,9 @@ namespace C4S.Shared.Logger
                 LogLevel.Information => ConsoleTextColor.White,
                 _ => ConsoleTextColor.White,
             };
+
+            if (Prefix != default)
+                message = $"{Prefix} {message}";
 
             _hangfireContext.SetTextColor(color);
             _hangfireContext.WriteLine(message);

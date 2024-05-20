@@ -7,6 +7,9 @@ namespace C4S.Shared.Logger
     /// </summary>
     public class ConsoleLogger : BaseLogger
     {
+        public ConsoleLogger(string? prefix = default)
+            : base(prefix) { }
+
         private readonly ILogger _logger;
 
         public ConsoleLogger(ILogger logger)
@@ -24,6 +27,9 @@ namespace C4S.Shared.Logger
                 LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
                 LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
             };
+
+            if(Prefix != default)
+                message = $"{Prefix} {message}";
 
             _logger.Log(microsoftLogLevel, message);
         }
