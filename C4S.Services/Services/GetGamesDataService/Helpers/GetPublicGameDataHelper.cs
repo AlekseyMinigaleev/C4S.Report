@@ -47,8 +47,8 @@ namespace C4S.Services.Services.GetGamesDataService.RequestMethodDictionaries
             var result = new List<PublicGameData>();
             foreach (var appId in appIds)
             {
-                var loggerPrefix = $"[{appId}]";
-                logger.LogInformation($"{loggerPrefix} Составление запроса на сервер Яндекс");
+                logger.Prefix = $"[{appId}]";
+                logger.LogInformation($"Составление запроса на сервер Яндекс");
                 HttpRequestMessage createRequest() =>
                     YGApiHttpRequestMethodDictionary.GetGamesInfo(
                         _yandexGetGameRequestURL, /*TODO: передавать внутрь только endpoint, внутри захардкодить BaseURL*/
@@ -59,17 +59,18 @@ namespace C4S.Services.Services.GetGamesDataService.RequestMethodDictionaries
                     createRequest: createRequest,
                     httpClientFactory: _httpClientFactory,
                     cancellationToken: cancellationToken);
-                logger.LogSuccess($"{loggerPrefix} Ответ от Яндекса успешно получен");
+                logger.LogSuccess($"Ответ от Яндекса успешно получен");
 
-                logger.LogInformation($"{loggerPrefix} Начало обработки ответа");
+                logger.LogInformation($"Начало обработки ответа");
                 var gameInfoModel = await DeserializeObjectsAsync(
                     httpResponseMessage,
                     logger,
                     cancellationToken);
-                logger.LogSuccess($"{loggerPrefix} Ответ успешно обработан");
+                logger.LogSuccess($"Ответ успешно обработан");
 
                 result.Add(gameInfoModel);
             }
+            logger.Prefix = default;
 
             logger.LogSuccess($"Процесс получения данных по всем играм успешно завершен");
             return result.ToArray();
@@ -95,30 +96,28 @@ namespace C4S.Services.Services.GetGamesDataService.RequestMethodDictionaries
             var rating = gameJToken.GetValue<int?>("gqRating");
             var previewURL = gameJToken.GetValue<string>("media", "cover", "prefix-url");
 
-            var loggerPrefix = $"[{appId}]";
-
             ProcessNullableField(
                 field: title,
                 key: "title",
-                log: () => logger.LogError($"{loggerPrefix} Не удалось получить название"),
+                log: () => logger.LogError($"Не удалось получить название"),
                 withException: true);
 
             ProcessNullableField(
                 field: previewURL,
                 key: "media, cover, prefix-url",
-                log: () => logger.LogError($"{loggerPrefix} Не удалось получить превью"),
+                log: () => logger.LogError($"Не удалось получить превью"),
                 withException: true);
 
             ProcessNullableField(
                 field: categoriesNames,
                 key: "categoriesNames",
-                log: () => logger.LogError($"{loggerPrefix} Не удалось получить категории"),
+                log: () => logger.LogError($"Не удалось получить категории"),
                 withException: true);
 
             ProcessNullableField(
                 field: rating,
                 key: "gqRating",
-                log: () => logger.LogError($"{loggerPrefix} Не удалось получить рейтинг"),
+                log: () => logger.LogError($"Не удалось получить рейтинг"),
                 withException: false);
 
             var gameInfo = new PublicGameData(

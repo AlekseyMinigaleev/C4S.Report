@@ -83,29 +83,30 @@ namespace C4S.Services.Services.GameSyncService
             var newGameModels = new List<GameModel>();
             foreach (var publicGameData in publicGamesData)
             {
-                var loggerPrefix = $"[{publicGameData.AppId}]";
+                _logger.Prefix = $"[{publicGameData.AppId}]";
+
                 var newGameModel = _mapper.Map<PublicGameData, GameModel>(publicGameData);
                 var newGameStatistic = _mapper.Map<PublicGameData, GameStatisticModel>(publicGameData);
 
                 /*TODO: множественное обращение к бд*/
                 await EnrichByPageId(
                     newGameModel,
-                    loggerPrefix,
                     cancellationToken);
 
                 newGameModel.GameStatistics = new HashSet<GameStatisticModel>() { newGameStatistic };
                 newGameModel.SetUser(_user);
 
-                _logger.LogInformation($"{loggerPrefix} Получение сложно высчитываемых данных");
+                _logger.LogInformation($"Получение сложно высчитываемых данных");
                 await EnrichByHardCalculatedDataAsync(
-                    loggerPrefix: loggerPrefix,
                     publicGameData: publicGameData,
                     gameModelToEnrich: newGameModel,
                     cancellationToken: cancellationToken);
-                _logger.LogInformation($"{loggerPrefix} Сложно высчитываемые данные получены");
+                _logger.LogInformation($"Сложно высчитываемые данные получены");
 
                 newGameModels.Add(newGameModel);
             }
+
+            _logger.Prefix = default;
             _logger.LogSuccess("Все полученные публичные данные, по всем играм обработаны");
 
             return newGameModels;
@@ -113,21 +114,20 @@ namespace C4S.Services.Services.GameSyncService
 
         private async Task<GameModel> EnrichByPageId(
             GameModel gameModelToEnrich,
-            string loggerPrefix,
             CancellationToken cancellationToken)
         {
             var existingGameModel = await _dbContext.Games
                    .Where(x => x.UserId == _user.Id)
                    .SingleOrDefaultAsync(x => x.AppId == gameModelToEnrich.AppId, cancellationToken);
 
-            _logger.LogInformation($"{loggerPrefix} привязка pageID, к новым полученных публичным данным.");
+            _logger.LogInformation($"Привязка pageID, к новым полученных публичным данным.");
 
             if (existingGameModel?.PageId is null)
-                _logger.LogWarning($"{loggerPrefix} не установлено pageID");
+                _logger.LogWarning($"Не установлено pageID");
 
             gameModelToEnrich.SetPageId(existingGameModel?.PageId);
 
-            _logger.LogSuccess($"{loggerPrefix} pageID, к новым полученных публичным данным привзяна.");
+            _logger.LogSuccess($"pageID, к новым полученных публичным данным привязан.");
 
             return gameModelToEnrich;
         }
@@ -135,7 +135,6 @@ namespace C4S.Services.Services.GameSyncService
         private async Task EnrichByHardCalculatedDataAsync(
             PublicGameData publicGameData,
             GameModel gameModelToEnrich,
-            string loggerPrefix,
             CancellationToken cancellationToken)
         {
             var existGameModel = _existingGameModelsQuery
@@ -143,29 +142,29 @@ namespace C4S.Services.Services.GameSyncService
                 .Include(x => x.User)
                 .SingleOrDefault(x => x.AppId == gameModelToEnrich.AppId);
 
-            _logger.LogInformation($"{loggerPrefix} Получение конфиденциальных данных");
+            _logger.LogInformation($"Получение конфиденциальных данных");
             var privateGameData = await _getGameDataService
                 .GetPrivateGameDataAsync(existGameModel, cancellationToken);
-            _logger.LogSuccess($"{loggerPrefix} Конфиденциальные данные получены");
+            _logger.LogSuccess($"Конфиденциальные данные получены");
 
-            _logger.LogInformation($"{loggerPrefix} Получение категорий");
+            _logger.LogInformation($"Получение категорий");
             var categories = await _gameModelHardCalculatedDataMapper
                 .ConvertCategories(publicGameData.CategoriesNames, cancellationToken);
-            _logger.LogSuccess($"{loggerPrefix} Категории получены");
+            _logger.LogSuccess($"Категории получены");
 
-            _logger.LogInformation($"{loggerPrefix} Конвертирование рейтинга в valueWithProgress");
+            _logger.LogInformation($"Конвертирование рейтинга в valueWithProgress");
             var rating = _gameModelHardCalculatedDataMapper
                 .ConvertRating(existGameModel, publicGameData.Rating);
-            _logger.LogSuccess($"{loggerPrefix} Рейтинг в valueWithProgress конвертирован");
+            _logger.LogSuccess($"Рейтинг в valueWithProgress конвертирован");
 
-            _logger.LogInformation($"{loggerPrefix} Конвертирование прибыли в valueWithProgress");
+            _logger.LogInformation($"Конвертирование прибыли в valueWithProgress");
             ValueWithProgress<double>? cashIncome;
             if (gameModelToEnrich.PageId is null)
                 cashIncome = null;
             else
                 cashIncome = _gameModelHardCalculatedDataMapper
                          .ConvertCashIncome(privateGameData.CashIncome, existGameModel?.GameStatistics);
-            _logger.LogSuccess($"{loggerPrefix} Прибыль в valueWithProgress конвертирована");
+            _logger.LogSuccess($"Прибыль в valueWithProgress конвертирована");
 
             gameModelToEnrich.AddCategories(categories);
             gameModelToEnrich.GameStatistics.First().Rating = rating;
@@ -183,7 +182,9 @@ namespace C4S.Services.Services.GameSyncService
             return user;
         }
 
-        private async Task UpdateDatabaseAsync(IEnumerable<GameModel> newGameModels, CancellationToken cancellationToken)
+        private async Task UpdateDatabaseAsync(
+            IEnumerable<GameModel> newGameModels,
+            CancellationToken cancellationToken)
         {
             var existingGameModels = _existingGameModelsQuery
                 .Include(x => x.CategoryGameModels)
@@ -202,8 +203,8 @@ namespace C4S.Services.Services.GameSyncService
         }
 
         private void SetIsArchive(
-                IEnumerable<GameModel> existingGameModels,
-                IEnumerable<GameModel> newGameModels)
+            IEnumerable<GameModel> existingGameModels,
+            IEnumerable<GameModel> newGameModels)
         {
             Archive();
             UnArchie();
