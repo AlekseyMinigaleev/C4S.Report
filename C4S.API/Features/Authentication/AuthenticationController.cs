@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using C4S.API.Features.Authentication.Actions;
 using C4S.API.Features.Authentication.Models;
+using System.Threading;
 
 namespace C4S.API.Features.Authentication
 {
@@ -59,6 +60,23 @@ namespace C4S.API.Features.Authentication
             await Mediator.Send(query, cancellationToken);
 
             return Ok("Аккаунт успешно создан");
+        }
+
+        [Authorize]
+        [HttpPost("SendEmailVerificationCode")]
+        public async Task<ActionResult> SendEmailVerificationCode(
+            [FromServices] IValidator<SendEmailVerificationCode.Command> validator,
+            CancellationToken cancellationToken)
+        {
+            var command = new SendEmailVerificationCode.Command();
+            await ValidateAndChangeModelStateAsync(validator, command, cancellationToken);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await Mediator.Send(command, cancellationToken);
+
+            return Ok();
         }
 
         /// <summary>

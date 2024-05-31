@@ -171,11 +171,11 @@ namespace C4S.API.Features.Authentication.Actions
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                await _hangfireBackgroundJobService
-                    .AddMissingHangfirejobsAsync(user, _logger, cancellationToken);
+                //await _hangfireBackgroundJobService
+                //    .AddMissingHangfirejobsAsync(user, _logger, cancellationToken);
 
-                await _gameSyncService
-                    .SyncGamesAsync(user.Id, _logger, cancellationToken);
+                //await _gameSyncService
+                //    .SyncGamesAsync(user.Id, _logger, cancellationToken);
             }
         }
     }

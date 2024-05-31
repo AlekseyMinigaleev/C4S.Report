@@ -5,7 +5,7 @@ namespace C4S.DB.ValueObjects
     /// <summary>
     /// Модель, представляющая токен верификации, присылаемый на почту пользователя.
     /// </summary>
-    public class EmailVerificationToken
+    public class EmailToken
     {
         /// <summary>
         /// Токен
@@ -20,11 +20,11 @@ namespace C4S.DB.ValueObjects
         /// <summary>
         /// Создает код подтверждения почты
         /// </summary>
-        public EmailVerificationToken CreateEmailConfirmationToken()
+        public EmailToken CreateEmailConfirmationToken()
         {
             var rng = new Random();
 
-            return new EmailVerificationToken
+            return new EmailToken
             {
                 Token = rng.Next(100000, 999999).ToString("D6"),
                 CreationDate = DateTime.UtcNow,
@@ -34,19 +34,19 @@ namespace C4S.DB.ValueObjects
         /// <summary>
         /// Создает токен для сброса пароля почты
         /// </summary>
-        public EmailVerificationToken CreateResetPasswordToken()
+        public EmailToken CreateResetPasswordToken()
         {
             var tokenBuffer = new byte[32];
             RandomNumberGenerator.Fill(tokenBuffer);
 
-            return new EmailVerificationToken
+            return new EmailToken
             {
                 Token = Convert.ToBase64String(tokenBuffer),
                 CreationDate = DateTime.UtcNow,
             };
         }
 
-        private EmailVerificationToken()
+        private EmailToken()
         { }
     }
 }
