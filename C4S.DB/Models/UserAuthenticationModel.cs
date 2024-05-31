@@ -40,7 +40,7 @@ namespace C4S.DB.Models
         /// <summary>
         /// Код для подтверждения почты 
         /// </summary>
-        public EmailVerificationToken EmailVerificationCode { get; set; }
+        public EmailVerificationToken? EmailVerificationCode { get; set; }
 
         public UserAuthenticationModel(
             UserModel user,

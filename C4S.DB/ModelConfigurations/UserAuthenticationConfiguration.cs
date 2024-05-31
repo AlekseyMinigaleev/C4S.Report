@@ -15,6 +15,15 @@ namespace C4S.DB.ModelConfigurations
             builder
                 .HasIndex(x => x.UserId)
                 .IsUnique();
+
+            builder.OwnsOne(x => x.EmailVerificationCode, emailVerificationCode =>
+            {
+                emailVerificationCode.Property(x => x.Token)
+                    .HasColumnName("EmailVerificationCode");
+
+                emailVerificationCode.Property(x => x.CreationDate)
+                    .HasColumnName("EmailVerificationCodeCreationDate");
+            });
         }
     }
 }
