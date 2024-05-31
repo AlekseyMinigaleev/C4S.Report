@@ -104,6 +104,6 @@ namespace C4S.DB.Models
         /// Создает и устанавливает код для подтверждения почты
         /// </summary>
         public void GenerateAndSetEmailVerificationCode() =>
-            EmailVerificationCode = EmailVerificationCode.CreateEmailConfirmationToken();
+            EmailVerificationCode = EmailToken.CreateEmailConfirmationToken();
     }
 }

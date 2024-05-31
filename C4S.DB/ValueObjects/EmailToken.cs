@@ -20,7 +20,7 @@ namespace C4S.DB.ValueObjects
         /// <summary>
         /// Создает код подтверждения почты
         /// </summary>
-        public EmailToken CreateEmailConfirmationToken()
+        public static EmailToken CreateEmailConfirmationToken()
         {
             var rng = new Random();
 
@@ -34,7 +34,7 @@ namespace C4S.DB.ValueObjects
         /// <summary>
         /// Создает токен для сброса пароля почты
         /// </summary>
-        public EmailToken CreateResetPasswordToken()
+        public static EmailToken CreateResetPasswordToken()
         {
             var tokenBuffer = new byte[32];
             RandomNumberGenerator.Fill(tokenBuffer);
