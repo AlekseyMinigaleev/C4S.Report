@@ -11,7 +11,7 @@ using MediatR;
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace C4S.API.Features.User.Actions
+namespace C4S.API.Features.Authentication.Actions
 {
     public class CreateAccount
     {
