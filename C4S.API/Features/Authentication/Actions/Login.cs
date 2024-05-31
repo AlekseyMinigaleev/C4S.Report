@@ -1,4 +1,6 @@
 ﻿using AngleSharp;
+using C4S.API.Features.Authentication.Models;
+using C4S.API.Features.Authentication.ViewModels;
 using C4S.DB;
 using C4S.DB.Models;
 using C4S.Services.Services.JWTService;
@@ -6,8 +8,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using C4S.API.Features.Authentication.Models;
-using C4S.API.Features.Authentication.ViewModels;
 
 namespace C4S.API.Features.Authentication.Actions
 {
@@ -43,13 +43,16 @@ namespace C4S.API.Features.Authentication.Actions
                 .MustAsync(async (query, cancellationToken) =>
                 {
                     var user = await dbContext.Users
-                        .Include(x=>x.AuthenticationModel)
+                        .Include(x => x.AuthenticationModel)
                         .SingleOrDefaultAsync(
-                            x => x.Email.Equals(query.Login)
-                                && x.AuthenticationModel.ValidatePassword(query.Password),
+                            x => x.Email.Equals(query.Login),
                             cancellationToken);
 
-                    return user is not null;
+                    if (user is null)
+                        return false;
+
+                    return user.AuthenticationModel
+                        .ValidatePassword(query.Password);
                 })
                 .WithErrorCode(HttpStatusCode.NotFound.ToString())
                 .WithMessage("Введены неверные логин или пароль");
@@ -77,7 +80,7 @@ namespace C4S.API.Features.Authentication.Actions
                 CancellationToken cancellationToken)
             {
                 var user = await _dbContext.Users
-                    .Include(x=>x.AuthenticationModel)
+                    .Include(x => x.AuthenticationModel)
                     .SingleAsync(
                         x => x.Email.Equals(query.UserCreditionals.Login),
                         cancellationToken);
