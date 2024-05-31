@@ -1,4 +1,6 @@
-﻿using C4S.DB;
+﻿using C4S.API.Features.Authentication.ViewModels;
+using C4S.API.Features.User.Requests;
+using C4S.DB;
 using C4S.DB.Models;
 using C4S.Services.Services.BackgroundJobService;
 using C4S.Services.Services.GameSyncService;
@@ -8,8 +10,6 @@ using FluentValidation;
 using MediatR;
 using System.Net;
 using System.Text.Json.Serialization;
-using C4S.API.Features.Authentication.ViewModels;
-using C4S.API.Features.User.Requests;
 
 namespace C4S.API.Features.User.Actions
 {
@@ -152,19 +152,23 @@ namespace C4S.API.Features.User.Actions
 
             public async Task Handle(Query request, CancellationToken cancellationToken)
             {
-                var userAuthenticationModel = new UserAuthenticationModel(
-                    user: null,
-                    request.Credentionals.Password);
-
                 var user = new UserModel(
                     email: request.Credentionals.Login,
                     developerPageUrl: request.DeveloperPageUrl,
                     rsyaAuthorizationToken: request.RsyaAuthorizationToken?.Token,
-                    authenticationModel: userAuthenticationModel, 
+                    authenticationModel: null,
                     games: new HashSet<GameModel>());
-       
 
-                await _dbContext.Users.AddAsync(user, cancellationToken);
+                var userAuthenticationModel = new UserAuthenticationModel(
+                    user: user,
+                    request.Credentionals.Password);
+
+                await _dbContext.Users
+                    .AddAsync(user, cancellationToken);
+
+                await _dbContext.UserAuthenticationModels
+                    .AddAsync(userAuthenticationModel, cancellationToken);
+
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 await _hangfireBackgroundJobService
