@@ -13,6 +13,10 @@ namespace C4S.DB.ModelConfigurations
             builder.HasMany(x => x.Games)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
+
+            builder.HasOne(x => x.AuthenticationModel)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserAuthenticationModel>(x => x.UserId);
         }
     }
 }

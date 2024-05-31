@@ -44,15 +44,13 @@ namespace C4S.DB.Models
         /// <summary>
         /// авторизационные данные пользователя
         /// </summary>
-        public UserAuthenticationModel AuthenticationModel { get; private set; }
-
-        public Guid? AuthenticationId { get; private set; }
+        public UserAuthenticationModel? AuthenticationModel { get; private set; }
 
         public UserModel(
             string email,
             string developerPageUrl,
             ISet<GameModel> games,
-            UserAuthenticationModel authenticationModel,
+            UserAuthenticationModel? authenticationModel = default,
             string? rsyaAuthorizationToken = default)
         {
             Id = Guid.NewGuid();
