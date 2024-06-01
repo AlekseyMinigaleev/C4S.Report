@@ -16,7 +16,12 @@ namespace C4S.DB.Models
         /// <summary>
         /// Логин пользователя
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; private set; }
+
+        /// <summary>
+        /// Подтверждена ли почта
+        /// </summary>
+        public bool IsEmailConfirmed { get; private set; }
 
         /// <summary>
         /// Ссылка на страницу разработчика
