@@ -62,7 +62,7 @@ namespace C4S.API.Features.Authentication.Actions
                     .Must(userCredentials =>
                     {
                         var user = dbContext.Users
-                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login) && x.IsEmailConfirmed);
+                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login) && x.IsActive);
 
                         return user is null;
                     })
@@ -156,7 +156,7 @@ namespace C4S.API.Features.Authentication.Actions
             {
                 var existedUserWithUnConfirmedEmail = await _dbContext.Users
                     .SingleOrDefaultAsync(
-                        x => x.Email.Equals(request.Credentionals.Login) && !x.IsEmailConfirmed,
+                        x => x.Email.Equals(request.Credentionals.Login) && !x.IsActive,
                         cancellationToken);
 
                 if (existedUserWithUnConfirmedEmail is not null)

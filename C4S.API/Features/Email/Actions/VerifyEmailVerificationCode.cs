@@ -48,8 +48,8 @@ namespace C4S.API.Features.Email.Actions
                 RuleFor(x => x)
                     .Must(x =>
                     {
-                        var result = _userAuthenticationModel?.EmailVerificationCode is not  null
-                            || _userAuthenticationModel?.EmailVerificationCode.Token is not null;
+                        var result = _userAuthenticationModel?.EmailVerificationCode is not null
+                            || _userAuthenticationModel?.EmailVerificationCode?.Token is not null;
                         return result;
                     })
                     .WithMessage("У пользователя отсутствуют аутентификационные данные.");
@@ -103,6 +103,13 @@ namespace C4S.API.Features.Email.Actions
                 if (result)
                 {
                     userAuthenticationModel!.EmailVerificationCode = null;
+                    var user = await _dbContext.Users
+                        .SingleAsync(
+                            x => x.Id == userAuthenticationModel.UserId,
+                            cancellationToken);
+                    /*TODO: Перенести это в последний этап регистрации пользователя, т.е. после выполнения синхронизации*/
+                    user.IsActive = true;
+
                     await _dbContext.SaveChangesAsync(cancellationToken);
                 }
 

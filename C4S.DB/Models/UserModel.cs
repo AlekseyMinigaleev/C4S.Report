@@ -19,9 +19,9 @@ namespace C4S.DB.Models
         public string Email { get; private set; }
 
         /// <summary>
-        /// Подтверждена ли почта
+        /// Активный ли аккаунт. Аккаунт считается активным, если была выполнена первая синхронизация данных.
         /// </summary>
-        public bool IsEmailConfirmed { get; private set; }
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// Ссылка на страницу разработчика
@@ -72,10 +72,8 @@ namespace C4S.DB.Models
         /// <summary>
         /// Устанавливает токен авторизации
         /// </summary>
-        public void SetRsyaAuthorizationToken(string rsyaAuthorizationToken)
-        {
+        public void SetRsyaAuthorizationToken(string rsyaAuthorizationToken) =>
             RsyaAuthorizationToken = rsyaAuthorizationToken;
-        }
 
         /// <summary>
         /// Возвращает имя разрботчика из <see cref="DeveloperPageUrl"/>
