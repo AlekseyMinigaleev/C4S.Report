@@ -8,6 +8,8 @@ using C4S.Shared.Logger;
 using C4S.Shared.Utils;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 using System.Net;
 using System.Text.Json.Serialization;
 
@@ -60,7 +62,7 @@ namespace C4S.API.Features.Authentication.Actions
                     .Must(userCredentials =>
                     {
                         var user = dbContext.Users
-                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login));
+                            .SingleOrDefault(x => x.Email.Equals(userCredentials.Login) && x.IsEmailConfirmed);
 
                         return user is null;
                     })
@@ -152,6 +154,19 @@ namespace C4S.API.Features.Authentication.Actions
 
             public async Task Handle(Query request, CancellationToken cancellationToken)
             {
+                var existedUserWithUnConfirmedEmail = await _dbContext.Users
+                    .SingleOrDefaultAsync(
+                        x => x.Email.Equals(request.Credentionals.Login) && !x.IsEmailConfirmed,
+                        cancellationToken);
+
+                if (existedUserWithUnConfirmedEmail is not null)
+                {
+                    await _dbContext.Users.DeleteByKeyAsync(
+                        existedUserWithUnConfirmedEmail);
+
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                }
+
                 var user = new UserModel(
                     email: request.Credentionals.Login,
                     developerPageUrl: request.DeveloperPageUrl,
@@ -171,11 +186,12 @@ namespace C4S.API.Features.Authentication.Actions
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                //await _hangfireBackgroundJobService
-                //    .AddMissingHangfirejobsAsync(user, _logger, cancellationToken);
+                //TODO: Убрать это отсюда, и сделать так, чтобы данные в аккаунт добавлялись только после подтверждения почты
+                await _hangfireBackgroundJobService
+                    .AddMissingHangfirejobsAsync(user, _logger, cancellationToken);
 
-                //await _gameSyncService
-                //    .SyncGamesAsync(user.Id, _logger, cancellationToken);
+                await _gameSyncService
+                    .SyncGamesAsync(user.Id, _logger, cancellationToken);
             }
         }
     }
