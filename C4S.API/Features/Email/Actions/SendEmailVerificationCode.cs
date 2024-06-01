@@ -3,10 +3,9 @@ using C4S.Shared.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using System.Security.Principal;
 
-namespace C4S.API.Features.Authentication.Actions
+namespace C4S.API.Features.Email.Actions
 {
     public class SendEmailVerificationCode
     {
@@ -36,7 +35,7 @@ namespace C4S.API.Features.Authentication.Actions
 
         public class Handler : IRequestHandler<Command>
         {
-            private readonly IPrincipal _principal; 
+            private readonly IPrincipal _principal;
             private readonly ReportDbContext _dbContext;
 
             public Handler(
@@ -50,11 +49,10 @@ namespace C4S.API.Features.Authentication.Actions
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
                 var userId = _principal.GetUserId();
-                var user = await _dbContext.Users
-                    .Include(x=>x.AuthenticationModel)
-                    .SingleAsync(x => x.Id == userId, cancellationToken);
+                var userAuthenticationModel = await _dbContext.UserAuthenticationModels
+                    .SingleAsync(x => x.UserId == userId, cancellationToken);
 
-                user.AuthenticationModel?
+                userAuthenticationModel
                     .GenerateAndSetEmailVerificationCode();
 
                 _dbContext.SaveChanges();
