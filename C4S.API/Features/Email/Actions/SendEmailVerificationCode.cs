@@ -1,4 +1,5 @@
 ﻿using C4S.DB;
+using C4S.Services.Services.EmailSenderService;
 using C4S.Shared.Extensions;
 using FluentValidation;
 using MediatR;
@@ -36,12 +37,15 @@ namespace C4S.API.Features.Email.Actions
         public class Handler : IRequestHandler<Command>
         {
             private readonly IPrincipal _principal;
+            private readonly IEmailSenderService _emailSenderService;
             private readonly ReportDbContext _dbContext;
 
             public Handler(
                 IPrincipal principal,
+                IEmailSenderService emailSenderService,
                 ReportDbContext reportDbContext)
             {
+                _emailSenderService = emailSenderService;
                 _principal = principal;
                 _dbContext = reportDbContext;
             }
@@ -50,6 +54,7 @@ namespace C4S.API.Features.Email.Actions
             {
                 var userId = _principal.GetUserId();
                 var userAuthenticationModel = await _dbContext.UserAuthenticationModels
+                    .Include(x => x.User)
                     .SingleAsync(x => x.UserId == userId, cancellationToken);
 
                 userAuthenticationModel
@@ -57,7 +62,11 @@ namespace C4S.API.Features.Email.Actions
 
                 _dbContext.SaveChanges();
 
-                /*TODO: сервис по отправке сообщений*/
+                await _emailSenderService.SendVerificationCode(
+                    userAuthenticationModel.User.Email,
+                    "Код подтверждения почты",
+                     Convert.ToInt32(userAuthenticationModel.EmailVerificationCode!.Token),
+                    cancellationToken);
             }
         }
     }
