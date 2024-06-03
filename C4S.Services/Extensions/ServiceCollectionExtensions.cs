@@ -1,6 +1,8 @@
 ﻿using AngleSharp;
 using C4S.Services.Services.BackgroundJobService;
 using C4S.Services.Services.CategoriesSyncService;
+using C4S.Services.Services.EmailSenderService;
+using C4S.Services.Services.EmailSenderService.Models;
 using C4S.Services.Services.ExcelWorksheetService;
 using C4S.Services.Services.GameSyncService;
 using C4S.Services.Services.GameSyncService.Helpers;
@@ -12,10 +14,10 @@ using C4S.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OpenQA.Selenium;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using OpenQA.Selenium.Firefox;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
-using OpenQA.Selenium.Firefox;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace C4S.Services.Extensions
 {
@@ -62,6 +64,17 @@ namespace C4S.Services.Extensions
                 var driver = new FirefoxDriver(firefoxOptions);
 
                 return driver;
+            });
+
+            services.AddTransient<IEmailSenderService, EmailSenderService>((provider) =>
+            {
+                var emailConfig = provider.GetService<IOptions<EmailSendingConfiguration>>();
+                if (emailConfig?.Value is null)
+                    throw new ArgumentNullException(nameof(IOptions<EmailSendingConfiguration>));
+
+                var service = new EmailSenderService(emailConfig.Value);
+
+                return service;
             });
         }
     }
