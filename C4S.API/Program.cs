@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using C4S.API.Helpers;
 using C4S.API;
+using C4S.Services.Services.EmailSenderService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -22,6 +23,8 @@ var jwtSection = configuration
 var jwtConfiguration = jwtSection
     .Get<JwtConfiguration>() ?? throw new ArgumentNullException(nameof(JwtConfiguration));
 var jwtService = new JwtServise(jwtConfiguration);
+
+var emailSection = configuration.GetSection("EmailSendingConfiguration");
 
 #region services
 services.AddHttpClient();
@@ -89,6 +92,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 services.Configure<JwtConfiguration>(jwtSection);
+services.Configure<EmailSendingConfiguration>(emailSection);
 
 builder.Services.AddCors();
 

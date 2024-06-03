@@ -1,4 +1,5 @@
-﻿using Konscious.Security.Cryptography;
+﻿using C4S.DB.ValueObjects;
+using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -35,6 +36,11 @@ namespace C4S.DB.Models
         /// Токен обновления
         /// </summary>
         public string? RefreshToken { get; private set; }
+
+        /// <summary>
+        /// Код для подтверждения почты 
+        /// </summary>
+        public EmailToken? EmailVerificationCode { get; set; }
 
         public UserAuthenticationModel(
             UserModel user,
@@ -93,5 +99,11 @@ namespace C4S.DB.Models
         /// </summary>
         public void SetRefreshToken(string? token) =>
             RefreshToken = token;
+
+        /// <summary>
+        /// Создает и устанавливает код для подтверждения почты
+        /// </summary>
+        public void GenerateAndSetEmailVerificationCode() =>
+            EmailVerificationCode = EmailToken.CreateEmailConfirmationToken();
     }
 }

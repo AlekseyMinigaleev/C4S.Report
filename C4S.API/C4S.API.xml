@@ -43,6 +43,17 @@
             </remarks>
             <returns><inheritdoc cref="M:Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build"/></returns>
         </member>
+        <member name="P:C4S.API.Features.Authentication.Actions.CreateAccount.Query.Credentionals">
+            <inheritdoc cref="T:C4S.API.Features.Authentication.ViewModels.UserCredentials"/>
+        </member>
+        <member name="P:C4S.API.Features.Authentication.Actions.CreateAccount.Query.DeveloperPageUrl">
+            <summary>
+            ссылка на страницу разработчика
+            </summary>
+        </member>
+        <member name="P:C4S.API.Features.Authentication.Actions.CreateAccount.Query.RsyaAuthorizationToken">
+            <inheritdoc cref="P:C4S.API.Features.Authentication.Actions.CreateAccount.Query.RsyaAuthorizationToken"/>
+        </member>
         <member name="P:C4S.API.Features.Authentication.Actions.Login.Query.UserCreditionals">
             <inheritdoc cref="T:C4S.API.Features.Authentication.ViewModels.UserCredentials"/>
         </member>
@@ -53,6 +64,11 @@
             <returns>
             Jwt-токен пользователя
             </returns>
+        </member>
+        <member name="M:C4S.API.Features.Authentication.AuthenticationController.CreateAccount(C4S.API.Features.Authentication.Actions.CreateAccount.Query,FluentValidation.IValidator{C4S.API.Features.Authentication.Actions.CreateAccount.Query},System.Threading.CancellationToken)">
+            <summary>
+            Создает новую учетную запись
+            </summary>
         </member>
         <member name="M:C4S.API.Features.Authentication.AuthenticationController.DeleteRefreshToken(System.Threading.CancellationToken)">
             <summary>
@@ -229,17 +245,6 @@
             Запускает процесс перезаписи всех джоб в hangfire базе данных
             </summary>
         </member>
-        <member name="P:C4S.API.Features.User.Actions.CreateAccount.Query.Credentionals">
-            <inheritdoc cref="T:C4S.API.Features.Authentication.ViewModels.UserCredentials"/>
-        </member>
-        <member name="P:C4S.API.Features.User.Actions.CreateAccount.Query.DeveloperPageUrl">
-            <summary>
-            ссылка на страницу разработчика
-            </summary>
-        </member>
-        <member name="P:C4S.API.Features.User.Actions.CreateAccount.Query.RsyaAuthorizationToken">
-            <inheritdoc cref="P:C4S.API.Features.User.Actions.CreateAccount.Query.RsyaAuthorizationToken"/>
-        </member>
         <member name="P:C4S.API.Features.User.Action.SetRsyaAuthorizationToken.Command.RsyaAythorizationToken">
             <inheritdoc cref="T:C4S.API.Features.User.Action.SetRsyaAuthorizationToken"/>
         </member>
@@ -257,11 +262,6 @@
             <summary>
             Устанавливает токен авторизации.
             https://yandex.ru/dev/partner-statistics/doc/ru/concepts/access
-            </summary>
-        </member>
-        <member name="M:C4S.API.Features.User.UserController.CreateAccount(C4S.API.Features.User.Actions.CreateAccount.Query,FluentValidation.IValidator{C4S.API.Features.User.Actions.CreateAccount.Query},System.Threading.CancellationToken)">
-            <summary>
-            Создает новую учетную запись
             </summary>
         </member>
         <member name="T:C4S.API.Helpers.ShemaClassesIdsRenamer">

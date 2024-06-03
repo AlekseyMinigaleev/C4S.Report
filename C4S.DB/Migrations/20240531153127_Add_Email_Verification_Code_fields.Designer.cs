@@ -4,6 +4,7 @@ using C4S.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace C4S.DB.Migrations
 {
     [DbContext(typeof(ReportDbContext))]
-    partial class ReportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240531153127_Add_Email_Verification_Code_fields")]
+    partial class Add_Email_Verification_Code_fields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,9 +185,6 @@ namespace C4S.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RsyaAuthorizationToken")
                         .HasColumnType("nvarchar(max)");
 
@@ -299,7 +299,7 @@ namespace C4S.DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("C4S.DB.ValueObjects.EmailToken", "EmailVerificationCode", b1 =>
+                    b.OwnsOne("C4S.DB.ValueObjects.EmailVerificationToken", "EmailVerificationCode", b1 =>
                         {
                             b1.Property<Guid>("UserAuthenticationModelId")
                                 .HasColumnType("uniqueidentifier");

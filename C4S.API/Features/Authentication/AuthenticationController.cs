@@ -1,5 +1,4 @@
-﻿using C4S.API.Features;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +38,26 @@ namespace C4S.API.Features.Authentication
                 new CookieOptions { HttpOnly = true });
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Создает новую учетную запись
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost("createAccount")]
+        public async Task<ActionResult> CreateAccount(
+            [FromBody] CreateAccount.Query query,
+            [FromServices] IValidator<CreateAccount.Query> validator,
+            CancellationToken cancellationToken)
+        {
+            await ValidateAndChangeModelStateAsync(validator, query, cancellationToken);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await Mediator.Send(query, cancellationToken);
+
+            return Ok("Аккаунт успешно создан");
         }
 
         /// <summary>
