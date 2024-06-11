@@ -66,7 +66,7 @@ namespace C4S.API.Features.Email.Actions
                         x => x.Email == request.Email && x.IsActive,
                         cancellationToken);
 
-                var token = _tokenService.GenerateToken(user.Id);
+                var token = await _tokenService.GenerateTokenAsync(user.Id);
 
                 var link = $"{_frontBaseUrl}/reset-password?token={token}";
 

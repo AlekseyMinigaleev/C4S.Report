@@ -14,18 +14,22 @@ namespace C4S.Services.Services.TokenService
         }
 
         /// <inheritdoc/>
-        public string GenerateToken(Guid userId)
+        public async Task<string> GenerateTokenAsync(Guid userId)
         {
             var creationDate = DateTime.UtcNow;
             var plainText = $"{userId}|{creationDate:O}";
-            var result = _cryptoHelper.Encrypt(plainText);
+            var result = await _cryptoHelper.EncryptAsync(plainText);
             return result;
         }
 
         /// <inheritdoc/>
-        public (Guid UserId, DateTime Date) DecryptToken(string token)
+        public async Task<(Guid UserId, DateTime Date)> DecryptTokenAsync(
+            string token,
+            CancellationToken cancellationToken)
         {
-            var decryptedText = _cryptoHelper.Decrypt(token);
+            var decryptedText = await _cryptoHelper
+                .DecryptAsync(token, cancellationToken);
+
             var parts = decryptedText.Split('|');
             if (parts.Length != 2)
                 throw new InvalidOperationException("Invalid token format");
