@@ -11,9 +11,7 @@ namespace C4S.API.Features.Email.Actions
     public class SendEmailVerificationCode
     {
         public class Command : IRequest
-        {
-            public string Email { get; set; }
-        }
+        { }
 
         public class EmailValidator : AbstractValidator<Command>
         {
@@ -52,6 +50,7 @@ namespace C4S.API.Features.Email.Actions
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
+                //TODO: Вынести этот код, он слишком много раз повторяется.
                 var userId = _principal.GetUserId();
                 var userAuthenticationModel = await _dbContext.UserAuthenticationModels
                     .Include(x => x.User)

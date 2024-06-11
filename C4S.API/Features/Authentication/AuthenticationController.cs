@@ -32,7 +32,7 @@ namespace C4S.API.Features.Authentication
 
             var result = await Mediator.Send(query, cancellationToken);
 
-            Response.Cookies.Append(
+                Response.Cookies.Append(
                 nameof(AuthorizationTokens.RefreshToken),
                 result.AuthorizationTokens.RefreshToken,
                 new CookieOptions { HttpOnly = true });

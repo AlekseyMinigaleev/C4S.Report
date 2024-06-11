@@ -3,6 +3,7 @@ using C4S.API.Features.User.Requests;
 using C4S.DB;
 using C4S.DB.Models;
 using C4S.Services.Services.BackgroundJobService;
+using C4S.Services.Services.EmailSenderService;
 using C4S.Services.Services.GameSyncService;
 using C4S.Shared.Logger;
 using C4S.Shared.Utils;
@@ -138,18 +139,21 @@ namespace C4S.API.Features.Authentication.Actions
             private readonly ReportDbContext _dbContext;
             private readonly IHangfireBackgroundJobService _hangfireBackgroundJobService;
             private readonly IGameSyncService _gameSyncService;
+            private readonly IEmailSenderService _emailSenderService;
             private readonly ConsoleLogger _logger;
 
             public Handler(
                 ReportDbContext dbContext,
                 IHangfireBackgroundJobService hangfireBackgroundJobService,
                 IGameSyncService gameSyncService,
+                IEmailSenderService emailSenderService,
                 ILogger<CreateAccount> logger)
             {
                 _dbContext = dbContext;
                 _logger = new ConsoleLogger(logger);
                 _hangfireBackgroundJobService = hangfireBackgroundJobService;
                 _gameSyncService = gameSyncService;
+                _emailSenderService = emailSenderService;
             }
 
             public async Task Handle(Query request, CancellationToken cancellationToken)
@@ -192,6 +196,18 @@ namespace C4S.API.Features.Authentication.Actions
 
                 await _gameSyncService
                     .SyncGamesAsync(user.Id, _logger, cancellationToken);
+
+                //TODO: Убрать это отсюда после сдачи диплома, пофиксить на стороне фронта.
+                userAuthenticationModel
+                    .GenerateAndSetEmailVerificationCode();
+
+                _dbContext.SaveChanges();
+
+                await _emailSenderService.SendVerificationCode(
+                    userAuthenticationModel.User.Email,
+                    "Код подтверждения почты",
+                     Convert.ToInt32(userAuthenticationModel.EmailVerificationCode!.Token),
+                    cancellationToken);
             }
         }
     }
