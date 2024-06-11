@@ -8,8 +8,8 @@ namespace C4S.Shared.Utils
     /// </summary>
     public class CryptoHelper
     {
-            private readonly byte[] _key;
-            private readonly byte[] _iv;
+        private readonly byte[] _key;
+        private readonly byte[] _iv;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="CryptoHelper"/> с заданным ключом.
@@ -35,11 +35,14 @@ namespace C4S.Shared.Utils
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
             using var ms = new MemoryStream();
-            using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
-            using var sw = new StreamWriter(cs);
-            sw.Write(plainText);
+            using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+            {
+                using var sw = new StreamWriter(cs);
+                sw.Write(plainText);
+            }
 
-            return Convert.ToBase64String(ms.ToArray());
+            var result = Convert.ToBase64String(ms.ToArray());
+            return result;
         }
 
         /// <summary>
@@ -56,11 +59,12 @@ namespace C4S.Shared.Utils
             aes.IV = _iv;
 
             var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
             using var ms = new MemoryStream(buffer);
             using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
             using var sr = new StreamReader(cs);
-            return sr.ReadToEnd();
+
+            var result = sr.ReadToEnd();
+            return result;
         }
     }
 }
