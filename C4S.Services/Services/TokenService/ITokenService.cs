@@ -3,7 +3,7 @@
     /// <summary>
     /// Сервис для генерации токенов, использующихся для смены критичных настроек.
     /// </summary>
-    internal interface ITokenService
+    public interface ITokenService
     {
         /// <summary>
         /// Шифрует<paramref name="userId"/> в токен, содержащий в себе эти данные.

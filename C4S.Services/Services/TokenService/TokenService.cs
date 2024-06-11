@@ -18,7 +18,8 @@ namespace C4S.Services.Services.TokenService
         {
             var creationDate = DateTime.UtcNow;
             var plainText = $"{userId}|{creationDate:O}";
-            return _cryptoHelper.Encrypt(plainText);
+            var result = _cryptoHelper.Encrypt(plainText);
+            return result;
         }
 
         /// <inheritdoc/>

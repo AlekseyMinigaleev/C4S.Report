@@ -81,10 +81,9 @@ namespace C4S.Services.Extensions
             services.AddTransient<ITokenService, TokenService>((provider) =>
             {
                 var tokensSecurityKey = configuration["TokensSecurityKey"];
-                ArgumentException.ThrowIfNullOrEmpty(
-                   tokensSecurityKey,
-                   "в файле appsetting.json не указан TokensSecurityKey");
 
+                if (string.IsNullOrWhiteSpace(tokensSecurityKey))
+                    throw new ArgumentNullException("в файле конфигурации не указан TokensSecurityKey");
                 var service = new TokenService(tokensSecurityKey);
                 return service;
             });
