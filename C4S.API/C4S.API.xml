@@ -136,6 +136,29 @@
             </summary>
             <param name="cancellationToken"></param>
         </member>
+        <member name="M:C4S.API.Features.Email.EmailController.SendEmailVerificationCode(FluentValidation.IValidator{C4S.API.Features.Email.Actions.SendEmailVerificationCode.Command},System.Threading.CancellationToken)">
+            <summary>
+            Отправляет код подтверждения на электронную почту пользователя.
+            </summary>
+            <param name="validator">Валидатор.</param>
+            <param name="cancellationToken">Токен отмены операции.</param>
+        </member>
+        <member name="M:C4S.API.Features.Email.EmailController.VerifyEmailVerificationCode(C4S.API.Features.Email.Actions.VerifyEmailVerificationCode.Query,FluentValidation.IValidator{C4S.API.Features.Email.Actions.VerifyEmailVerificationCode.Query},System.Threading.CancellationToken)">
+            <summary>
+            Проверяет код подтверждения, отправленный на электронную почту пользователя.
+            </summary>
+            <param name="query">Запрос на проверку кода подтверждения.</param>
+            <param name="validator">Валидатор.</param>
+            <param name="cancellationToken">Токен отмены операции.</param>
+        </member>
+        <member name="M:C4S.API.Features.Email.EmailController.SendResetPasswordLink(C4S.API.Features.Email.Actions.SendResetPasswordLink.Query,FluentValidation.IValidator{C4S.API.Features.Email.Actions.SendResetPasswordLink.Query},System.Threading.CancellationToken)">
+            <summary>
+            Отправляет ссылку для сброса пароля на указанную электронную почту.
+            </summary>
+            <param name="query">Запрос на отправку ссылки для сброса пароля.</param>
+            <param name="validator">Валидатор.</param>
+            <param name="cancellationToken">Токен отмены операции.</param>
+        </member>
         <member name="M:C4S.API.Features.GameStatisticReport.GameStatisticReportController.GetGameStatisticReportAsync(System.String,System.String,FluentValidation.IValidator{C4S.API.Features.GameStatisticReport.Actions.GetReportFileWithGameStatistics.Query},System.Threading.CancellationToken)">
             <summary>
             Возвращает готовый к скачиванию файл отчета игровой статистики.
