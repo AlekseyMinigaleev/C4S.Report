@@ -46,8 +46,8 @@ namespace C4S.API.Features.UserAuthentication.Actions
                     .NotEmpty()
                     .MustAsync(async (x, cancellationToken) =>
                     {
-                        var (userId, creationDate) = await tokenService
-                            .DecryptTokenAsync(x, cancellationToken);
+                        var (userId, creationDate) = tokenService
+                            .DecryptToken(x);
 
                         _creationDate = creationDate;
 
@@ -84,8 +84,8 @@ namespace C4S.API.Features.UserAuthentication.Actions
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var (userId, creationDate) = await _tokenService
-                            .DecryptTokenAsync(request.ResetPasswordToken, cancellationToken);
+                var (userId, creationDate) = _tokenService
+                            .DecryptToken(request.ResetPasswordToken);
 
                 var userAuthentication = await _dbContext.UserAuthenticationModels
                     .SingleAsync(
