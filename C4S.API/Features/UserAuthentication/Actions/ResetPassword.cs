@@ -46,8 +46,9 @@ namespace C4S.API.Features.UserAuthentication.Actions
                     .NotEmpty()
                     .MustAsync(async (x, cancellationToken) =>
                     {
+                        var token = x.Replace(' ', '+');
                         var (userId, creationDate) = tokenService
-                            .DecryptToken(x);
+                            .DecryptToken(token);
 
                         _creationDate = creationDate;
 
@@ -65,7 +66,8 @@ namespace C4S.API.Features.UserAuthentication.Actions
 
                         return result;
                     })
-                    .WithMessage("Вышло время действия токена.");
+                    .WithErrorCode("TokenHasExpired")
+                    .WithMessage("Вышло время действия токена. Необходимо получить новую ссылку для восстановления пароля.");
             }
         }
 
@@ -84,8 +86,9 @@ namespace C4S.API.Features.UserAuthentication.Actions
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
+                var token = request.ResetPasswordToken.Replace(" ", "+");
                 var (userId, creationDate) = _tokenService
-                            .DecryptToken(request.ResetPasswordToken);
+                            .DecryptToken(token);
 
                 var userAuthentication = await _dbContext.UserAuthenticationModels
                     .SingleAsync(
