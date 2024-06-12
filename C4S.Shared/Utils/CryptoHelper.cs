@@ -26,19 +26,19 @@ namespace C4S.Shared.Utils
         /// </summary>
         /// <param name="plainText">Текст, который нужно зашифровать.</param>
         /// <returns>Зашифрованный текст в виде строки Base64.</returns>
-        public async Task<string> EncryptAsync(string plainText)
+        public string Encrypt(string plainText)
         {
             using var aes = Aes.Create();
             aes.Key = _key;
             aes.IV = _iv;
 
-            var encryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
             using var ms = new MemoryStream();
             using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
             {
                 using var sw = new StreamWriter(cs);
-                await sw.WriteAsync(plainText);
+                sw.Write(plainText);
             }
 
             var result = Convert.ToBase64String(ms.ToArray());
@@ -50,7 +50,7 @@ namespace C4S.Shared.Utils
         /// </summary>
         /// <param name="plainText">Текст, который нужно зашифровать.</param>
         /// <returns>Зашифрованный текст в виде строки Base64.</returns>
-        public async Task<string> DecryptAsync(string cipherText,CancellationToken cancellationToken)
+        public string Decrypt(string cipherText)
         {
             var buffer = Convert.FromBase64String(cipherText);
 
@@ -63,7 +63,7 @@ namespace C4S.Shared.Utils
             using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
             using var sr = new StreamReader(cs);
 
-            var result = await sr.ReadToEndAsync(cancellationToken);
+            var result = sr.ReadToEnd();
             return result;
         }
     }
