@@ -36,5 +36,17 @@ namespace C4S.Services.Services.EmailSenderService
           string subject,
           int verificationCode,
           CancellationToken cancellation);
+
+        /// <summary>
+        /// Асинхронно отправляет код подтверждения на электронную почту.
+        /// </summary>
+        /// <param name="emailTo">Адрес электронной почты получателя.</param>
+        /// <param name="subject">Тема письма.</param>
+        /// <param name="resetPasswordLink">Код подтверждения.</param>
+        public Task SendResetPasswordLink(
+          string emailTo,
+          string subject,
+          string resetPasswordLink,
+          CancellationToken cancellation);
     }
 }

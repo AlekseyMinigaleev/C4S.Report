@@ -37,6 +37,7 @@ namespace C4S.API.Features.Email.Actions
                 _userAuthenticationModel = dbContext.UserAuthenticationModels
                     .SingleOrDefault(x => x.UserId == userId);
 
+                /*TODO: в конфигурацию можно вынести*/
                 _emailTokensExpirationModel = configuration
                             .GetSection("EmailTokensExpiration")
                             .Get<EmailTokensExpiration>();

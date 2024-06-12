@@ -10,6 +10,7 @@ using C4S.Services.Services.GetGamesDataService;
 using C4S.Services.Services.GetGamesDataService.Helpers;
 using C4S.Services.Services.GetGamesDataService.RequestMethodDictionaries;
 using C4S.Services.Services.JWTService;
+using C4S.Services.Services.TokenService;
 using C4S.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -74,6 +75,16 @@ namespace C4S.Services.Extensions
 
                 var service = new EmailSenderService(emailConfig.Value);
 
+                return service;
+            });
+
+            services.AddTransient<ITokenService, TokenService>((provider) =>
+            {
+                var tokensSecurityKey = configuration["TokensSecurityKey"];
+
+                if (string.IsNullOrWhiteSpace(tokensSecurityKey))
+                    throw new ArgumentNullException("в файле конфигурации не указан TokensSecurityKey");
+                var service = new TokenService(tokensSecurityKey);
                 return service;
             });
         }
