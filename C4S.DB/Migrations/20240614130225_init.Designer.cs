@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace C4S.DB.Migrations
 {
     [DbContext(typeof(ReportDbContext))]
-    [Migration("20240215103112_replace_GameStatuses_with_Categories")]
-    partial class replace_GameStatuses_with_Categories
+    [Migration("20240614130225_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,8 @@ namespace C4S.DB.Migrations
 
                     b.HasKey("GameId", "CategoryId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("CategoryGame", (string)null);
                 });
 
@@ -46,6 +48,7 @@ namespace C4S.DB.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -66,16 +69,21 @@ namespace C4S.DB.Migrations
                     b.Property<int>("AppId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PageId")
-                        .HasColumnType("int");
+                    b.Property<long?>("PageId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("PreviewURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("PublicationDate")
+                    b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
@@ -94,9 +102,6 @@ namespace C4S.DB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double?>("CashIncome")
-                        .HasColumnType("float");
-
                     b.Property<double>("Evaluation")
                         .HasColumnType("float");
 
@@ -105,12 +110,6 @@ namespace C4S.DB.Migrations
 
                     b.Property<DateTime>("LastSynchroDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("PlayersCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Rating")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -144,6 +143,34 @@ namespace C4S.DB.Migrations
                     b.ToTable("HangfireJobConfiguration", (string)null);
                 });
 
+            modelBuilder.Entity("C4S.DB.Models.UserAuthenticationModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserAuthentication", (string)null);
+                });
+
             modelBuilder.Entity("C4S.DB.Models.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -154,16 +181,12 @@ namespace C4S.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Login")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("RsyaAuthorizationToken")
                         .HasColumnType("nvarchar(max)");
@@ -177,7 +200,7 @@ namespace C4S.DB.Migrations
                 {
                     b.HasOne("C4S.DB.Models.CategoryModel", "Category")
                         .WithMany()
-                        .HasForeignKey("GameId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -211,7 +234,53 @@ namespace C4S.DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("C4S.DB.ValueObjects.ValueWithProgress<double>", "CashIncome", b1 =>
+                        {
+                            b1.Property<Guid>("GameStatisticModelId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<double>("ActualValue")
+                                .HasColumnType("float")
+                                .HasColumnName("CashIncomeActual");
+
+                            b1.Property<double>("ProgressValue")
+                                .HasColumnType("float")
+                                .HasColumnName("CashIncomeProgress");
+
+                            b1.HasKey("GameStatisticModelId");
+
+                            b1.ToTable("GameStatistic");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GameStatisticModelId");
+                        });
+
+                    b.OwnsOne("C4S.DB.ValueObjects.ValueWithProgress<int>", "Rating", b1 =>
+                        {
+                            b1.Property<Guid>("GameStatisticModelId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("ActualValue")
+                                .HasColumnType("int")
+                                .HasColumnName("RatingActual");
+
+                            b1.Property<int>("ProgressValue")
+                                .HasColumnType("int")
+                                .HasColumnName("RatingProgress");
+
+                            b1.HasKey("GameStatisticModelId");
+
+                            b1.ToTable("GameStatistic");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GameStatisticModelId");
+                        });
+
+                    b.Navigation("CashIncome");
+
                     b.Navigation("Game");
+
+                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("C4S.DB.Models.Hangfire.HangfireJobConfigurationModel", b =>
@@ -225,6 +294,41 @@ namespace C4S.DB.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("C4S.DB.Models.UserAuthenticationModel", b =>
+                {
+                    b.HasOne("C4S.DB.Models.UserModel", "User")
+                        .WithOne("AuthenticationModel")
+                        .HasForeignKey("C4S.DB.Models.UserAuthenticationModel", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("C4S.DB.ValueObjects.EmailToken", "EmailVerificationCode", b1 =>
+                        {
+                            b1.Property<Guid>("UserAuthenticationModelId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("EmailVerificationCodeCreationDate");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("EmailVerificationCode");
+
+                            b1.HasKey("UserAuthenticationModelId");
+
+                            b1.ToTable("UserAuthentication");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserAuthenticationModelId");
+                        });
+
+                    b.Navigation("EmailVerificationCode");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("C4S.DB.Models.GameModel", b =>
                 {
                     b.Navigation("CategoryGameModels");
@@ -234,6 +338,8 @@ namespace C4S.DB.Migrations
 
             modelBuilder.Entity("C4S.DB.Models.UserModel", b =>
                 {
+                    b.Navigation("AuthenticationModel");
+
                     b.Navigation("Games");
 
                     b.Navigation("HangfireJobConfigurationModels");
