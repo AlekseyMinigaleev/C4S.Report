@@ -117,7 +117,7 @@ namespace C4S.API.Features.Game.Actions
                 var userId = _principal.GetUserId();
 
                 var allGames = await _dbContext.Games
-                    .Where(x => x.UserId == userId)
+                    .Where(x => x.UserId == userId && !x.IsArchived)
                     .Include(x => x.User)
                     .ProjectTo<GameViewModel>(_mapper.ConfigurationProvider)
                     .AsSplitQuery() /*TODO: не совсем понимаю как это работает, но это решает warning*/
