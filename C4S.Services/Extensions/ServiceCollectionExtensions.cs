@@ -15,6 +15,7 @@ using C4S.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
@@ -57,12 +58,12 @@ namespace C4S.Services.Extensions
 
             services.AddSingleton<IWebDriver>(provider =>
             {
-                new DriverManager().SetUpDriver(new FirefoxConfig());
-                var firefoxOptions = new FirefoxOptions();
-                firefoxOptions.AddArgument("--headless");
-                firefoxOptions.AddArgument("--lang=ru");
+                new DriverManager().SetUpDriver(new ChromeConfig());
+                var chromeOptions = new ChromeOptions();
+                chromeOptions.AddArgument("--headless");
+                chromeOptions.AddArgument("--lang=ru");
 
-                var driver = new FirefoxDriver(firefoxOptions);
+                var driver = new ChromeDriver(chromeOptions);
 
                 return driver;
             });
