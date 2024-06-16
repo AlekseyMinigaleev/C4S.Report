@@ -68,7 +68,7 @@ namespace C4S.API.Features.Email.Actions
 
                 var token = _tokenService.GenerateToken(user.Id);
 
-                var link = $"{_frontBaseUrl}#/reset-password?token={token}";
+                var link = $"{_frontBaseUrl}/s4c-report-front/#/reset-password?token={token}";
 
                 await _emailSernderService.SendResetPasswordLink(
                     emailTo: user.Email,
