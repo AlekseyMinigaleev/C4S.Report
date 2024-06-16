@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+
 # Установка необходимых инструментов и зависимостей
 RUN apt-get update && apt-get install -y wget gnupg2 unzip lsb-release libappindicator3-1
 
@@ -12,6 +13,7 @@ RUN wget -q -O /tmp/chromedriver_linux64.zip https://chromedriver.storage.google
     && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
     && rm /tmp/chromedriver_linux64.zip \
     && chmod +x /usr/local/bin/chromedriver
+
 WORKDIR /app
 EXPOSE 8080
 
