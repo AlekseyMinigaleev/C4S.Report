@@ -1,10 +1,17 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-RUN apt-get update
-RUN apt-get install -y xvfb
-RUN echo "deb http://deb.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list.d/debian.list
-RUN apt-get update
-RUN apt-get install -y libcrypt1
-RUN apt-get install -y firefox
+# Установка необходимых инструментов и зависимостей
+RUN apt-get update && apt-get install -y wget gnupg2 unzip lsb-release libappindicator3-1
+
+# Установка Google Chrome
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable
+
+RUN wget -q -O /tmp/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
+    && rm /tmp/chromedriver_linux64.zip \
+    && chmod +x /usr/local/bin/chromedriver
 WORKDIR /app
 EXPOSE 8080
 
