@@ -61,6 +61,10 @@ namespace C4S.Services.Extensions
                 new DriverManager().SetUpDriver(new ChromeConfig());
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.AddArgument("--headless");
+                chromeOptions.AddArgument("--no-sandbox");
+                chromeOptions.AddArgument("--disable-dev-shm-usage");
+                chromeOptions.AddArgument("--disable-gpu");
+                chromeOptions.AddArgument("--remote-debugging-port=9222");
                 chromeOptions.AddArgument("--lang=ru");
 
                 var driver = new ChromeDriver(chromeOptions);
