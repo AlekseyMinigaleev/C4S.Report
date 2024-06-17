@@ -42,14 +42,16 @@ namespace C4S.Services.Services.EmailSenderService
             await smtp.ConnectAsync(
                 EmailConfiguration.EmailHost,
                 EmailConfiguration.SmtpPort,
-                SecureSocketOptions.StartTls);
+                SecureSocketOptions.StartTls,
+                cancellationToken);
 
             await smtp.AuthenticateAsync(
                 EmailConfiguration.EmailUsername,
-                EmailConfiguration.EmailPassword);
+                EmailConfiguration.EmailPassword,
+                cancellationToken);
 
             await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
+            await smtp.DisconnectAsync(true, cancellationToken);
         }
 
         /// <summary>
