@@ -104,10 +104,14 @@ services.ConfigureApplicationCookie(options =>
 
 var app = builder.BuildWithHangfireStorage(configuration);
 
+var frontBaseUrl = configuration["FrontBaseUrl"];
+
+Console.WriteLine(frontBaseUrl);
+
 #region middleware
 app.UseCors(options => options
-    .WithOrigins("http://158.160.98.39:3000", "http://localhost:3000")
-    .AllowAnyMethod()
+    .WithOrigins($"{frontBaseUrl}", "http://localhost:3000")
+    .AllowAnyMethod()   
     .AllowAnyHeader()
     .AllowCredentials());
 

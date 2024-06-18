@@ -122,7 +122,7 @@ namespace C4S.API.Features.Authentication.Actions
                 CancellationToken cancellationToken)
             {
                 var document = await _browsingContext
-                    .OpenAsync("https://yandex.ru/games/developer/42543", cancellationToken);
+                    .OpenAsync($"{user.DeveloperPageUrl}", cancellationToken);
 
                 /*TODO: сделать общую ошибку для случая когда с парсинга приходит null*/
                 var developerCard = document.QuerySelector(".developer-card__name") ?? throw new ArgumentNullException();

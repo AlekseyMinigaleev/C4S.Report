@@ -30,8 +30,9 @@ namespace C4S.DB.Migrations
 
             using var dbContext = serviceProvider.GetRequiredService<ReportDbContext>();
 
-            var connectionString = dbContext.Database.GetConnectionString();
+            //var connectionString = "Data Source=db;Database=C4S.Report;User ID=sa;Password=Wezed!ddwx1;Trust Server Certificate=Yes;";
 
+            var connectionString = dbContext.Database.GetConnectionString();
 
             using var connection = new SqlConnection(connectionString);
             var query = "SELECT Password, Id FROM [UserAuthentication]";

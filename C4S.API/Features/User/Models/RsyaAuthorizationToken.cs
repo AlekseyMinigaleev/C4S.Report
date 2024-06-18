@@ -26,10 +26,6 @@ namespace C4S.API.Features.User.Requests
                         if (authorizationToken is null)
                             return true;
 
-                        var validPattern = new Regex("^[a-zA-Z0-9_]+$");
-                        if (!validPattern.IsMatch(authorizationToken))
-                            return false;
-
                         var testUrl = "https://partner2.yandex.ru/api/statistics2/tree.json?lang=ru";
 
                         var httpRequestMethod = new HttpRequestMessage(HttpMethod.Get, testUrl);
