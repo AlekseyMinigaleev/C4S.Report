@@ -30,5 +30,5 @@ services:
     container_name: front
     image: front
     build:
-        context: ../c4s-report-front/s4c-report-front
+        context: ../c4s-report-front2/s4c-report-front
         dockerfile: Dockerfile
