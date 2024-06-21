@@ -14,6 +14,13 @@ C4S.Report - это проект для автоматизации сбора с
 - **Автоматический сбор данных**: автоматический сбор данных из двух ресурсов Яндекс Игры в запланированное время.
 - **Настройка частоты синхронизации данных**: возможность настройки частоты синхронизации данных.
 
+## Архитектура проекта
+
+Проект состоит из двух частей:
+
+- **Backend**: репозиторий с исходным кодом [C4S.Report Backend](https://github.com/AlekseyMinigaleev/C4S.Report/tree/dev).
+- **Frontend**: репозиторий с исходным кодом фронтенда [C4S.Report Frontend](https://github.com/AlekseyMinigaleev/s4c-report-front/tree/dev).
+
 ## Технологии
 
 Проект использует следующие технологии:
@@ -30,13 +37,6 @@ C4S.Report - это проект для автоматизации сбора с
 - **Парсинг HTML**: Selenium и веб-драйвер FireFox
 - **База данных**: SQL Server
 - **ORM**: Entity Framework Core (Code First подход)
-
-## Архитектура проекта
-
-Проект состоит из двух частей:
-
-- **Backend**: репозиторий с исходным кодом [C4S.Report Backend](https://github.com/AlekseyMinigaleev/C4S.Report/tree/dev).
-- **Frontend**: репозиторий с исходным кодом фронтенда [C4S.Report Frontend](https://github.com/AlekseyMinigaleev/s4c-report-front/tree/dev).
 
 ## Установка и запуск
 
