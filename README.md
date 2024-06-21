@@ -35,8 +35,8 @@ C4S.Report - это проект для автоматизации сбора с
 
 Проект состоит из двух частей:
 
-- **Backend**: репозиторий с исходным кодом [C4S.Report Backend](https://github.com/AlekseyMinigaleev/C4S.Report).
-- **Frontend**: репозиторий с исходным кодом фронтенда (вставьте ссылку на репозиторий фронтенда здесь).
+- **Backend**: репозиторий с исходным кодом [C4S.Report Backend](https://github.com/AlekseyMinigaleev/C4S.Report/tree/dev).
+- **Frontend**: репозиторий с исходным кодом фронтенда [C4S.Report Frontend](https://github.com/AlekseyMinigaleev/s4c-report-front/tree/dev).
 
 ## Установка и запуск
 
