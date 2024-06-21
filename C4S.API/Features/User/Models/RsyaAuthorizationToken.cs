@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using System.Text.RegularExpressions;
-
-namespace C4S.API.Features.User.Requests
+namespace C4S.API.Features.User.Models
 {
     public class RsyaAuthorizationToken
     {

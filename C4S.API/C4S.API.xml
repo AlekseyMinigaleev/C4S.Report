@@ -279,7 +279,7 @@
         <member name="P:C4S.API.Features.User.Action.SetRsyaAuthorizationToken.Command.RsyaAythorizationToken">
             <inheritdoc cref="T:C4S.API.Features.User.Action.SetRsyaAuthorizationToken"/>
         </member>
-        <member name="P:C4S.API.Features.User.Requests.RsyaAuthorizationToken.Token">
+        <member name="P:C4S.API.Features.User.Models.RsyaAuthorizationToken.Token">
             <summary>
             Токен авторизации для апи /partner2.yandex.ru/api
             </summary>

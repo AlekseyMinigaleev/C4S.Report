@@ -3,7 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
-using C4S.API.Features.User.Requests;
+using C4S.API.Features.User.Models;
 using C4S.Shared.Extensions;
 
 namespace C4S.API.Features.User.Action

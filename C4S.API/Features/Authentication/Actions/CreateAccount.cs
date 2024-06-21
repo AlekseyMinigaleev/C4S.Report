@@ -1,5 +1,5 @@
 ﻿using C4S.API.Features.Authentication.ViewModels;
-using C4S.API.Features.User.Requests;
+using C4S.API.Features.User.Models;
 using C4S.DB;
 using C4S.DB.Models;
 using C4S.Services.Services.BackgroundJobService;
