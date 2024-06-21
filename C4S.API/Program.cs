@@ -25,6 +25,7 @@ var jwtConfiguration = jwtSection
 var jwtService = new JwtServise(jwtConfiguration);
 
 var emailSection = configuration.GetSection("EmailSendingConfiguration");
+var frontBaseURL = configuration["FrontBaseUrl"];
 
 #region services
 services.AddHttpClient();
@@ -106,7 +107,6 @@ var app = builder.BuildWithHangfireStorage(configuration);
 
 #region middleware
 
-var frontBaseURL = configuration["FrontBaseUrl"];
 
 app.UseCors(options => options
     .WithOrigins($"{frontBaseURL}", "http://localhost:3000")
