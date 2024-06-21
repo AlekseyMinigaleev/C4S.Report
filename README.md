@@ -203,6 +203,5 @@ C4S.Report - это проект для автоматизации сбора с
   - `your_access_token_here`: ваш access токен для аутентификации запросов.    
   
 ## Контакты
-- email: aleksey.mingialeev@gmail.com
+- Email: aleksey.mingialeev@gmail.com
 - tg: https://t.me/AlekseyMinigaleev
-- WhatsApp: +7-919-606-68-20
