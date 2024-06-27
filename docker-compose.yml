@@ -11,7 +11,7 @@ services:
         - 8001:1433
     environment:
         - ACCEPT_EULA=Y
-        - MSSQL_SA_PASSWORD=Wezed!ddwx1
+        - MSSQL_SA_PASSWORD=
     networks:
         - c4s.report
   api:

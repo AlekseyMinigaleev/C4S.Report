@@ -27,14 +27,12 @@ namespace C4S.API.Extensions
                 .UseRecommendedSerializerSettings()
                 .UseSqlServerStorage(hangfireConnection, new SqlServerStorageOptions()
                 {
-                    //хуй пойми как, что это. Было написано с целью пофиксить спам запросам к скл серверу hangfaer`ом. не понимаю что конкретно дает эта строка.
-                    // на данный момент проблема решена костыльно, hagnfire в другую бд, и в профайлере делаю фильтр.
                     QueuePollInterval = TimeSpan.FromHours(12)
                 })
                 .UseConsole());
 
             services.AddHttpContextAccessor();
-            /*TODO: вроде не должно быть ошибок с nullReference проверил для неавторизоаванных пользователй ошибок нет*/
+            /*TODO: вроде не должно быть ошибок с nullReference проверил для не авторизованных пользователей ошибок нет*/
             services.AddTransient<IPrincipal>(provider => 
                 provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
